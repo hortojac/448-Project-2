@@ -8,6 +8,7 @@ Game::Game() // game constructor
     // row = 11;
     // col = 11;
     shipAmount = 0;    // sets shipAmount to 0 for the start of a board
+    ai_mode = 0;
     player1 = nullptr; // sets the player1 pointer to nullptr
     player2 = nullptr; // sets the player2 pointer to nullptr
 }
@@ -93,9 +94,62 @@ void Game::printBoard() // game class function 'printBoard' prints the board to 
     }
 }
 
+void Game::easyMode(int shipAmount)
+{
+
+}
+
+void Game::smartMode(int shipAmount)
+{
+
+}
+
+void Game::hackerMode(int shipAmount)
+{
+
+}
+
 void Game::playGame_ai()
 {
-    
+    std::cout << "Welcome to Battleship!" << std::endl; // prints out welcome message
+    std::cout << "----------------------" << std::endl; // prints out visual break
+    do                                                  // loop at least once
+    {
+        std::cout << "[SYSTEM] - Ship amount: "; // ask for ship amount
+        std::cin >> shipAmount;       // store player entry to shipAmount variable
+
+        while (std::cin.fail()) // while input failed
+        {
+            std::cin.clear();                                                   // clear the cache
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
+
+            std::cout << "[SYSTEM] - Ship amount (1-5): "; // ask again for the ship amount
+            std::cin >> shipAmount;       // store player entry to shipAmount
+        }
+
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
+        if (shipAmount < 1 || shipAmount > 5)                               // if the shipAmount isn't 1-5...
+        {
+            std::cout << "[SYSTEM] - Ship amount must be between 1-5." << std::endl; // tell player ship amount must be between 1-5
+        }
+    } while (shipAmount < 1 || shipAmount > 5); // loop if the shipAmount isn't between 1 and 5
+    do
+    {
+        std::cout << "Would you like to play\n1)Easy Mode\n2)Smart Mode\n3)Hacker Mode\nChoose(1-3): ";
+        std::cin >> ai_mode;
+        if(ai_mode==1)
+        {
+            easyMode(shipAmount);
+        }
+        else if(ai_mode==2)
+        {
+            smartMode(shipAmount);
+        }
+        else if(ai_mode==3)
+        {
+            hackerMode(shipAmount);
+        }
+    } while(ai_mode<1 || ai_mode>3);
 }
 
 void Game::playGame() // game class function 'playGame' controls much of the game logic

@@ -21,9 +21,13 @@ public:
     void labels(); //declares labels function with public scope
     bool isOverlapCoord(Player* thisPlayer, char xLetter, int yNumber);
     void finishGame(int playerID); //declares finishGame function with public scope
+    void easyMode(int ship);
+    void smartMode(int ship);
+    void hackerMode(int ship);
     int row = 11; //declares an integer 'row' in public scope set to 11
     int col = 11; //declares an integer 'col' in public scope set to 11
     int shipAmount; //declares an integer 'shipAmount' in public scope set to null
+    int ai_mode;
     bool gameFinished = false; //declares a bool 'gameFinished' initialized to false
     Player *player1; //creates a player1 pointer in the public scope
     Player *player2; //creates a player2 pointer in the public scope
