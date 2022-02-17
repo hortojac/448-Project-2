@@ -513,7 +513,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
 
         if (!gameFinished) // if the game isn't finished...
         {
-            Sleep(3); //wait three seconds
+            sleep(3); //wait three seconds
             for (int i = 0; i < 100; i++) // loop 100 times
             {
                 std::cout << std::endl; // new line (effectively clearing the command prompt)
@@ -574,7 +574,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
             }
             // printBoardP2();
         }
-        Sleep(3); // wait 3 seconds
+        sleep(3); // wait 3 seconds
     }
 }
 
