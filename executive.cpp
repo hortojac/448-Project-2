@@ -1,12 +1,7 @@
 #include <iostream>
 #include "executive.h"
 
-void Executive::run() // Executive function called run
+void Executive::run(bool ai) // Executive function called run
 {
-    myGame.playGame(); // calls the playGame function of the game class
-}
-
-void Executive::run_ai() // Executive function called run
-{
-    myGame.playGame_ai(); // calls the playGame function of the game class
+    myGame.playGame(ai); // calls the playGame function of the game class
 }
