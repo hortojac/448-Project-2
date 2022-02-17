@@ -1,0 +1,54 @@
+Team 12 Project 1 Documentation
+
+Person-Hour Estimation:
+	20 Hours. This rough estimate comes from evaluating the difficulty of
+	making battleship per the instructions as well as looking over the
+	additional documents, meetings, and communication needed. We suspect 
+	a total of 2 person hours dedicated to meetings, 4 person hours for
+	documentation of work and organization/communication, and 14 to decide
+	what's the best way to construct a game and executing that as a team 
+	through code.
+
+Person-Hour Log:
+	General communication among team members (number of messages * 30 seconds): 142 minutes
+	GTA meeting: 40 minutes
+	CATME team discussion prep-work: 30 minutes
+	CATME team discussion: 80 minutes
+	Documenting and submitting team discussion: 30 minutes
+	Discord and Github repo setup and initial email to the team: 60 minutes
+	Code documentation: 30 minutes
+	Code comments: 90 minutes
+	Coding: 12 hours
+
+	Total: 20.4 hours
+
+
+Code Documentation:
+	Our code should look quite similar to labs in Programming 1 and 2. Written 
+	in C++, our battleship game has many classes such as game, player, and ship
+	each performing various functions to get the game working. 
+
+	The game class functions as the core component in running battlship. Initially
+	called by the executive class from main.cpp, this class creates the visual for 
+	an empty board and begins by asking the player for the number of ships and where
+	to place them. Relevant data stored by the game class includes declaring the player
+	classes (player1 and player2) and stores the number of ships on a board. Functions 
+	within the game class control the 2D array that makes up the board, prints said 
+	array, makes changes to it depending on the player guess, and declares a winner.
+
+	The ship class handles the individual ships themselves by storing the ships
+	location coordinates and providing a sank variable. Each ship class instance 
+	contains a 2D int array of the cooridnates for each spot on the ship and an array
+	holding a bool of if that spot on the ship is hit. The sank variable determines
+	if the entire ship is sunk or not.
+
+	The player class holds each ship class instance in an array of ship classes. The
+	functions within this player class add ships to this array, retrieve ship info, and
+	determine if one of the players ships has been hit or missed, on of their ships has
+	been sunk, or if every ship has been sunk.
+
+	The executive class simply runs the game class
+
+	With all these classes put together, we can create a new instance of the executive
+	class in main and run it to begin a complete game of battleship.
+	
