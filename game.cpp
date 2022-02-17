@@ -93,6 +93,11 @@ void Game::printBoard() // game class function 'printBoard' prints the board to 
     }
 }
 
+void Game::playGame_ai()
+{
+    
+}
+
 void Game::playGame() // game class function 'playGame' controls much of the game logic
 {
     std::cout << "Welcome to Battleship!" << std::endl; // prints out welcome message
