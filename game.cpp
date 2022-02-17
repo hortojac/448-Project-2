@@ -161,6 +161,9 @@ void Game::playGame() // game class function 'playGame' controls much of the gam
         }
     } while (shipAmount < 1 || shipAmount > 5); // loop if the shipAmount isn't between 1 and 5
     
+    player1 = new Player(shipAmount);           // declares player1 as a new Player with the shipAmount
+    player2 = new Player(shipAmount);           // declares player2 as a new Player with the shipAmount
+    std::cout << std::endl;
     if(ai)
     {
         do
@@ -197,9 +200,6 @@ void Game::playGame() // game class function 'playGame' controls much of the gam
     }
     else
     {
-        player1 = new Player(shipAmount);           // declares player1 as a new Player with the shipAmount
-        player2 = new Player(shipAmount);           // declares player2 as a new Player with the shipAmount
-        std::cout << std::endl;
         obtainShips(); // calls the obtainShips function
         playerGuess(); // calls the playerGuess function
     }
