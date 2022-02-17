@@ -12,7 +12,8 @@ class Game
 public:
     Game(); //decalres game constructor
     ~Game(); //decalres game destructor
-    void playGame(bool ai); //declares playGame function with public scope
+    void playGame(); //declares playGame function with public scope
+    bool ai;
     void makeBoard(); //declares makeBoard function with public scope
     void printBoard(); //declares printBoard function with public scope
     void obtainShips(); //declares obtainShips function with public scope
