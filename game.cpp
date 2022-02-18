@@ -114,13 +114,13 @@ void Game::hackerMode(int shipAmount)
 
 void Game::playGame() // game class function 'playGame' controls much of the game logic
 {
-    int kind_of_game;
+    int kind_of_game = 0;
     bool ai;
     std::cout << "Welcome to Battleship!" << std::endl; // prints out welcome message
     std::cout << "----------------------" << std::endl; // prints out visual break
     std::cout<<"Would you like to play '1 player' or '2 player'?\nChoose 1 or 2: ";
     std::cin>>kind_of_game;
-    while (std::cin.fail()) // while input failed
+    while (std::cin.fail() && (kind_of_game != 1) && (kind_of_game != 2)) // while input failed
     {
         std::cin.clear();                                                   // clear the cache
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
@@ -140,6 +140,7 @@ void Game::playGame() // game class function 'playGame' controls much of the gam
     {
         ai = false;
     }
+
     do                                                  // loop at least once
     {
         std::cout << "[SYSTEM] - Ship amount: "; // ask for ship amount
