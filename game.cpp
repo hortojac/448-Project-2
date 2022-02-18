@@ -115,7 +115,6 @@ void Game::hackerMode(int shipAmount)
 void Game::playGame() // game class function 'playGame' controls much of the game logic
 {
     int kind_of_game = 0;
-    bool ai;
     std::cout << "Welcome to Battleship!" << std::endl; // prints out welcome message
     std::cout << "----------------------" << std::endl; // prints out visual break
     std::cout<<"Would you like to play '1 player' or '2 player'?\nChoose 1 or 2: ";
