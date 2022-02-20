@@ -527,10 +527,10 @@ void Game::obtainShips() // game class function 'obtainShips'
         int previousY = 0;
         std::random_device rd; // obtain a random number from hardware
         std::mt19937 gen(rd()); // seed the generator
-        std::uniform_int_distribution<> distr(0, 9); // define the range
+        std::uniform_int_distribution<> distr_x(0, 9); // define the range
         std::uniform_int_distribution<> distr_y(0, 10); // define the range
-        randX = convertLetter[distr(gen)]; //Ai places ship 1 at any X coordinate (A-J)
-        randY = distr(gen); //Ai places ship 1 at any Y coordinate (0-9)
+        randX = convertLetter[distr_x(gen)]; //Ai places ship 1 at any X coordinate (A-J)
+        randY = distr_y(gen); //Ai places ship 1 at any Y coordinate (0-9)
         player2->addShip(0, 0, randX, randY, 1); // adds ship to ai's board
         player2->getShipInfo(0, 0);  // outputs to user where ai placed their ship (will delete later)          
         std::cout << std::endl; // new line
@@ -548,8 +548,8 @@ void Game::obtainShips() // game class function 'obtainShips'
                 {
                     do
                     {
-                        randX = convertLetter[distr(gen)]; //Ai places ship 
-                        randY = distr(gen); //Ai places ship 
+                        randX = convertLetter[distr_x(gen)]; //Ai places ship 
+                        randY = distr_y(gen); //Ai places ship 
                     } while (isOverlapCoord(player2, randX, randY));
                     previousX = randX;
                     previousY = randY;
@@ -565,8 +565,8 @@ void Game::obtainShips() // game class function 'obtainShips'
                 {
                     do
                     {
-                        randX = convertLetter[distr(gen)];
-                        randY = distr(gen);
+                        randX = convertLetter[distr_x(gen)];
+                        randY = distr_y(gen);
                         for(int k=0; k < 9; k++)
                         {
                             if(randX == convertLetter[k])
