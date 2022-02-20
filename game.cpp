@@ -523,6 +523,7 @@ void Game::obtainShips() // game class function 'obtainShips'
         int randY = 0;
         int index;
         bool isValidCoord = false; // declare bool isValidCoord initialized to false
+        bool vertical = false;
         char previousX;
         int previousY = 0;
         std::random_device rd; // obtain a random number from hardware
@@ -561,7 +562,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                     player2->printShipBoard(); // print player 2s board
                     std::cout << std::endl; // new line
                 }
-                else
+                else if(j==1)
                 {
                     do
                     {
@@ -577,10 +578,12 @@ void Game::obtainShips() // game class function 'obtainShips'
                         if( (abs(randY-previousY)==1) && (previousX == randX) )
                         {
                             isValidCoord = true; 
+                            vertical = true;
                         }
                         else if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) )
                         {
                             isValidCoord = true;
+                            vertical = false;
                         }
                         else
                         {
@@ -596,6 +599,61 @@ void Game::obtainShips() // game class function 'obtainShips'
                     }while(!isValidCoord || isOverlapCoord(player2, randX, randY));
                     previousX = randX;
                     previousY = randY;
+                    isValidCoord = false;
+                    player2->addShip(i - 1, j, randX, randY, i); 
+                    player2->getShipInfo(i - 1, j);                        
+                    std::cout << std::endl; // new line
+                    std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
+                    std::cout << "-------------------" << std::endl; // extra spacing
+                    player2->printShipBoard(); // print player 2s board
+                    std::cout << std::endl; // new line
+                }
+                else
+                {
+                    do
+                    {
+                        randX = convertLetter[distr_x(gen)];
+                        randY = distr_y(gen);
+                        for(int k=0; k < 9; k++)
+                        {
+                            if(randX == convertLetter[k])
+                            {
+                                index = k;
+                            }
+                        }
+                        if(vertical)
+                        {
+                            if( (abs(randY-previousY)==1) && (previousX == randX) )
+                            {
+                                isValidCoord = true; 
+                            }
+                            else
+                            {
+                                isValidCoord = false;
+                            }
+                        }
+                        else
+                        {
+                            if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) )
+                            {
+                                isValidCoord = true;
+                            }
+                            else
+                            {
+                                isValidCoord = false;
+                            }
+                        }
+                        std::cout << "randY == " << randY << "\n";
+                        std::cout << "previousY == " << previousY << "\n";
+                        std::cout << "abs(randY-previousY) == " << abs(randY-previousY) << "\n";
+                        std::cout << "randX == " << randX << "\n";
+                        std::cout << "previousX == " << previousX << "\n";
+                        std::cout << "convertLetter[index+1] == " << convertLetter[index+1] << "\n";
+                        std::cout << "convertLetter[index-1] == " << convertLetter[index-1] << "\n";
+                    }while(!isValidCoord || isOverlapCoord(player2, randX, randY));
+                    previousX = randX;
+                    previousY = randY;
+                    isValidCoord = false;
                     player2->addShip(i - 1, j, randX, randY, i); 
                     player2->getShipInfo(i - 1, j);                        
                     std::cout << std::endl; // new line
