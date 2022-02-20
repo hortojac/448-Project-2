@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <random>
 #include "game.h"
 
 Game::Game() // game constructor
@@ -8,6 +9,7 @@ Game::Game() // game constructor
     // row = 11;
     // col = 11;
     shipAmount = 0;    // sets shipAmount to 0 for the start of a board
+    ai_mode = 0;
     player1 = nullptr; // sets the player1 pointer to nullptr
     player2 = nullptr; // sets the player2 pointer to nullptr
 }
@@ -93,15 +95,53 @@ void Game::printBoard() // game class function 'printBoard' prints the board to 
     }
 }
 
-void Game::playGame_ai()
+void Game::easyMode(int shipAmount)
 {
-    
+    obtainShips(); // calls the obtainShips function
+    playerGuess(); // calls the playerGuess function
+}
+
+void Game::smartMode(int shipAmount)
+{
+    obtainShips(); // calls the obtainShips function
+    playerGuess(); // calls the playerGuess function
+}
+
+void Game::hackerMode(int shipAmount)
+{
+    obtainShips(); // calls the obtainShips function
+    playerGuess(); // calls the playerGuess function
 }
 
 void Game::playGame() // game class function 'playGame' controls much of the game logic
 {
+    int kind_of_game = 0;
     std::cout << "Welcome to Battleship!" << std::endl; // prints out welcome message
     std::cout << "----------------------" << std::endl; // prints out visual break
+    std::cout<<"[SYSTEM] - Would you like to play '1 player' or '2 player'?\n[SYSTEM] - Choose 1 or 2: ";
+    std::cin>>kind_of_game;
+    std::cout << std::endl;
+    while (std::cin.fail() || (kind_of_game != 1) && (kind_of_game != 2)) // while input failed
+    {
+        std::cin.clear();                                                   // clear the cache
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
+        std::cout << "[SYSTEM] - Choose(1 or 2)\n1)1 Player Game\n2)2 Player Game\nselection: "; // ask again for 1 or 2 player game
+        std::cin >> kind_of_game;       // store player entry to kind_of_game
+    }
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
+        if (kind_of_game < 1 || kind_of_game > 2)                               // if the selection isn't 1 or 2...
+        {
+            std::cout << "[SYSTEM] - Mode selection must be either 1 or 2." << std::endl; // tell player selection must be between 1-2
+        }
+    if(kind_of_game==1)
+    {
+        ai = true;
+    }
+    else if(kind_of_game==2)
+    {
+        ai = false;
+    }
+
     do                                                  // loop at least once
     {
         std::cout << "[SYSTEM] - Ship amount: "; // ask for ship amount
@@ -122,11 +162,50 @@ void Game::playGame() // game class function 'playGame' controls much of the gam
             std::cout << "[SYSTEM] - Ship amount must be between 1-5." << std::endl; // tell player ship amount must be between 1-5
         }
     } while (shipAmount < 1 || shipAmount > 5); // loop if the shipAmount isn't between 1 and 5
+    
     player1 = new Player(shipAmount);           // declares player1 as a new Player with the shipAmount
     player2 = new Player(shipAmount);           // declares player2 as a new Player with the shipAmount
     std::cout << std::endl;
-    obtainShips(); // calls the obtainShips function
-    playerGuess(); // calls the playerGuess function
+    if(ai)
+    {
+        do
+        {
+            std::cout << "[SYSTEM] - Would you like to play\n1)Easy\n2)Medium\n3)Hard\nChoose(1-3): ";
+            std::cin >> ai_mode;
+            std::cout << std::endl;
+            while (std::cin.fail()) // while input failed
+            {
+                std::cin.clear();                                                   // clear the cache
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
+
+                std::cout << "[SYSTEM] - Choose(1-3)\n1)EasyMode\n2)SmartMode\n3)Hacker Mode\nselection: "; // ask again for the mode
+                std::cin >> ai_mode;       // store player entry to ai_mode
+            }
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
+            if (ai_mode < 1 || ai_mode > 3)                               // if the shipAmount isn't 1-3...
+            {
+                std::cout << "[SYSTEM] - Mode selection must be between 1-3." << std::endl; // tell player mode must be between 1-3
+            }
+
+            if(ai_mode==1)
+            {
+                easyMode(shipAmount);
+            }
+            else if(ai_mode==2)
+            {
+                smartMode(shipAmount);
+            }
+            else if(ai_mode==3)
+            {
+                hackerMode(shipAmount);
+            }
+        } while(ai_mode<1 || ai_mode>3);
+    }
+    else
+    {
+        obtainShips(); // calls the obtainShips function
+        playerGuess(); // calls the playerGuess function
+    }
 }
 
 void Game::obtainShips() // game class function 'obtainShips'
@@ -282,156 +361,251 @@ void Game::obtainShips() // game class function 'obtainShips'
             std::cout << std::endl; // new line
         }
     }
-    std::cout << std::endl; // new ling
-    for (int i = 0; i < 100; i++) // loop 100 times
-    {
-        std::cout << std::endl; // create a new line (effectively clearing the command prompt)
-    }
 
-    /* PLAYER 2 STARTS HERE */
-    std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // tell player who's board it is
-    std::cout << "-------------------" << std::endl; // extra spacing
-    printBoard(); // print the default board
-    do // loop at least once
+    if(!ai)
     {
-        std::cout << "[SETUP] Player 2 - enter X coordinate for 1x1 ship (A-J): "; // ask for x coordinate of 1x1 ship
-        std::cin >> tempxLetter; // store player input
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // if double input such as AA, will only take A as input
-        if ((int)tempxLetter < 65 || (int)tempxLetter > 74) // if ASCII of player input isn't between 65 and 74 (A - J)...
+        std::cout << std::endl; // new ling
+        for (int i = 0; i < 100; i++) // loop 100 times
         {
-            std::cout << "[SYSTEM] - Must enter letter between A and J." << std::endl; // inform player of the error
+            std::cout << std::endl; // create a new line (effectively clearing the command prompt)
         }
-    } while ((int)tempxLetter < 65 || (int)tempxLetter > 74); // loop while input is incorrect
-    do // loop at least once
-    {
-        std::cout << "[SETUP] Player 2 - enter Y coordinate for [1x1] ship (1-10): "; // ask for y coordinate of 1x1 ship
-        std::cin >> tempyNumber; // store value
 
-        while (std::cin.fail()) // while input fails...
+        /* PLAYER 2 STARTS HERE */
+        std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // tell player who's board it is
+        std::cout << "-------------------" << std::endl; // extra spacing
+        printBoard(); // print the default board
+        do // loop at least once
         {
-            std::cin.clear(); // clear cache
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double inputs
-
-            std::cout << "[SETUP] Player 2 - enter Y coordinate for [1x1] ship (1-10): "; // ask again
-            std::cin >> tempyNumber; // store
-        }
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
-
-        if (tempyNumber < 1 || tempyNumber > 10) // if stored y value isn't between 1 and 10...
-        {
-            std::cout << "[SYSTEM] - Must enter number between 1 and 10." << std::endl; // inform player of the error
-        }
-    } while (tempyNumber < 1 || tempyNumber > 10); // loop while error persists
-
-    player2->addShip(0, 0, tempxLetter, tempyNumber, 1); // temp line - Lee
-    player2->getShipInfo(0, 0);                          // temp line - Lee :: it seems like it is updating the information above function.
-    std::cout << std::endl; // new line
-    std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // print information for whos board
-    std::cout << "-------------------" << std::endl; // extra spacing
-    player2->printShipBoard(); // print player 2s board
-    std::cout << std::endl; // new line
-
-    /* PLAYER 2 When ship amount is more than one */
-    for (int i = 2; i <= shipAmount; i++) // for the second ship and each one after...
-    {
-        for (int j = 0; j < i; j++) // for the length of that ship...
-        {
-            int prevX, prevY; // declare ints 'prevX' and 'prevY'
-
-            /* Asking for X Coordinate */
-            bool isValidCoord = false; // declare bool 'isValidCoord' initialized to false
-            do // loop at least once
+            std::cout << "[SETUP] Player 2 - enter X coordinate for 1x1 ship (A-J): "; // ask for x coordinate of 1x1 ship
+            std::cin >> tempxLetter; // store player input
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // if double input such as AA, will only take A as input
+            if ((int)tempxLetter < 65 || (int)tempxLetter > 74) // if ASCII of player input isn't between 65 and 74 (A - J)...
             {
+                std::cout << "[SYSTEM] - Must enter letter between A and J." << std::endl; // inform player of the error
+            }
+        } while ((int)tempxLetter < 65 || (int)tempxLetter > 74); // loop while input is incorrect
+        do // loop at least once
+        {
+            std::cout << "[SETUP] Player 2 - enter Y coordinate for [1x1] ship (1-10): "; // ask for y coordinate of 1x1 ship
+            std::cin >> tempyNumber; // store value
 
+            while (std::cin.fail()) // while input fails...
+            {
+                std::cin.clear(); // clear cache
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double inputs
+
+                std::cout << "[SETUP] Player 2 - enter Y coordinate for [1x1] ship (1-10): "; // ask again
+                std::cin >> tempyNumber; // store
+            }
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore double input values
+
+            if (tempyNumber < 1 || tempyNumber > 10) // if stored y value isn't between 1 and 10...
+            {
+                std::cout << "[SYSTEM] - Must enter number between 1 and 10." << std::endl; // inform player of the error
+            }
+        } while (tempyNumber < 1 || tempyNumber > 10); // loop while error persists
+
+        player2->addShip(0, 0, tempxLetter, tempyNumber, 1); // temp line - Lee
+        player2->getShipInfo(0, 0);                          // temp line - Lee :: it seems like it is updating the information above function.
+        std::cout << std::endl; // new line
+        std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // print information for whos board
+        std::cout << "-------------------" << std::endl; // extra spacing
+        player2->printShipBoard(); // print player 2s board
+        std::cout << std::endl; // new line
+
+        /* PLAYER 2 When ship amount is more than one */
+        for (int i = 2; i <= shipAmount; i++) // for the second ship and each one after...
+        {
+            for (int j = 0; j < i; j++) // for the length of that ship...
+            {
+                int prevX, prevY; // declare ints 'prevX' and 'prevY'
+
+                /* Asking for X Coordinate */
+                bool isValidCoord = false; // declare bool 'isValidCoord' initialized to false
                 do // loop at least once
                 {
-                    std::cout << "[SETUP] Player 2 - enter X coordinate " << (j + 1) << " [for 1x" << i << "] ship (A-J): "; // ask for the x coordinates
-                    std::cin >> tempxLetter; // store player input
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // if double input such as AA, will only take A as input
-                    if ((int)tempxLetter < 65 || (int)tempxLetter > 74) // if input isn't between A and J...
-                    {
-                        std::cout << "[SYSTEM] - Must enter letter between A and J." << std::endl; // inform player of the error
-                    }
-                } while ((int)tempxLetter < 65 || (int)tempxLetter > 74); // loop while error persists
 
-                /* Asking for Y Coordinate */
-                do // loop at least once
-                {
-                    std::cout << "[SETUP] Player 2 - enter Y coordinate " << (j + 1) << " for [1x" << i << "] ship (1-10): "; // ask for y coordinate
-                    std::cin >> tempyNumber; // store player input
-
-                    while (std::cin.fail()) // if input fails
+                    do // loop at least once
                     {
-                        std::cin.clear(); // clear cache
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove duplicate inputs
-
-                        std::cout << "[SETUP] Player 2 - enter Y coordinate " << (j + 1) << " for [1x" << i << "] ship (1-10): "; // ask for y coordinate again
-                        std::cin >> tempyNumber; // store player input
-                    }
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore duplicate inputs
-
-                    if (tempyNumber < 1 || tempyNumber > 10) // if y coord isn't between 1 and 10...
-                    {
-                        std::cout << "[SYSTEM] - Must enter number between 1 and 10." << std::endl; // inform player of the error
-                    }
-
-                } while (tempyNumber < 1 || tempyNumber > 10); // loop while error persists
-
-                // *need to add condition check if coord overlaps with prev ship coords*
-                if (j == 0) // when it is first time entering coordinate with multiple coord ship
-                {
-                    if (isOverlapCoord(player2,tempxLetter, tempyNumber)) // if coordinates overlap...
-                    {
-                        isValidCoord = false; // set coordinates as invalid
-                        std::cout << "[SYSTEM] - Coordinate overlapes with existing coordinate!" << std::endl; // inform player of overlapping coords
-                        std::cout << "[SYSTEM] - Overlapping Coordinate : " << tempxLetter << ", " << tempyNumber << std::endl; // inform player of which coordinates
-                    }
-                    else // otherwise...
-                    {
-                        isValidCoord = true; // set coordinates as valid
-                    }
-                }
-                else // otherwise...
-                {
-                    if ( // Input Check (4) :: Coord is next to previous coordinate (e.g. should not be A1, A3)
-                        // if coordinates are not next to previous coordinates
-                        ((abs((int)tempxLetter - prevX > 1)) || (abs(tempyNumber - prevY) > 1))
-                        // if coordinates overlap with previous coord
-                        || ((abs((int)tempxLetter - prevX) == 0) && (abs(tempyNumber - prevY) == 0))
-
-                    )
-                    {
-                        std::cout << "[SYSTEM] - Must enter a new coordinate that is next to your previous coordinate." << std::endl; // inform player of the error
-                        std::cout << "[SYSTEM] - Previous Coordinate : " << (char)prevX << ", " << prevY << std::endl; // tells player the previous coordinates
-                    }
-                    else // otherwise...
-                    {
-                        if (!isOverlapCoord(player2,tempxLetter, tempyNumber)) // if coordinates are not overlapping
+                        std::cout << "[SETUP] Player 2 - enter X coordinate " << (j + 1) << " [for 1x" << i << "] ship (A-J): "; // ask for the x coordinates
+                        std::cin >> tempxLetter; // store player input
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // if double input such as AA, will only take A as input
+                        if ((int)tempxLetter < 65 || (int)tempxLetter > 74) // if input isn't between A and J...
                         {
-                            isValidCoord = true; // set coordinates as valid
+                            std::cout << "[SYSTEM] - Must enter letter between A and J." << std::endl; // inform player of the error
+                        }
+                    } while ((int)tempxLetter < 65 || (int)tempxLetter > 74); // loop while error persists
+
+                    /* Asking for Y Coordinate */
+                    do // loop at least once
+                    {
+                        std::cout << "[SETUP] Player 2 - enter Y coordinate " << (j + 1) << " for [1x" << i << "] ship (1-10): "; // ask for y coordinate
+                        std::cin >> tempyNumber; // store player input
+
+                        while (std::cin.fail()) // if input fails
+                        {
+                            std::cin.clear(); // clear cache
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove duplicate inputs
+
+                            std::cout << "[SETUP] Player 2 - enter Y coordinate " << (j + 1) << " for [1x" << i << "] ship (1-10): "; // ask for y coordinate again
+                            std::cin >> tempyNumber; // store player input
+                        }
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore duplicate inputs
+
+                        if (tempyNumber < 1 || tempyNumber > 10) // if y coord isn't between 1 and 10...
+                        {
+                            std::cout << "[SYSTEM] - Must enter number between 1 and 10." << std::endl; // inform player of the error
+                        }
+
+                    } while (tempyNumber < 1 || tempyNumber > 10); // loop while error persists
+
+                    // *need to add condition check if coord overlaps with prev ship coords*
+                    if (j == 0) // when it is first time entering coordinate with multiple coord ship
+                    {
+                        if (isOverlapCoord(player2,tempxLetter, tempyNumber)) // if coordinates overlap...
+                        {
+                            isValidCoord = false; // set coordinates as invalid
+                            std::cout << "[SYSTEM] - Coordinate overlapes with existing coordinate!" << std::endl; // inform player of overlapping coords
+                            std::cout << "[SYSTEM] - Overlapping Coordinate : " << tempxLetter << ", " << tempyNumber << std::endl; // inform player of which coordinates
                         }
                         else // otherwise...
                         {
-                            std::cout << "[SYSTEM] - Coordinate overlapes with existing coordinate!" << std::endl; // inform player of the error
-                            std::cout << "[SYSTEM] - Overlapping Coordinate : " << tempxLetter << ", " << tempyNumber << std::endl; // inform player which coordinates overlap
+                            isValidCoord = true; // set coordinates as valid
                         }
                     }
-                }
-            } while (!isValidCoord); // loop while coordinates are invalid
-            prevX = (int)tempxLetter; // sets 'prevX' as the ASCII of 'tempxLetter'
-            prevY = tempyNumber; // sets 'prevY' as 'tempyNumber'
-            player2->addShip(i - 1, j, tempxLetter, tempyNumber, i); // temp line - Lee
-            player2->getShipInfo(i - 1, j);                          // temp line - Lee :: it seems like it is updating the information above function.
-            std::cout << std::endl; // new line
-            std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // informs player on whos board it is
-            std::cout << "-------------------" << std::endl; // extra spacing
-            player2->printShipBoard(); // print player 2s board
-            std::cout << std::endl; // new line
+                    else // otherwise...
+                    {
+                        if ( // Input Check (4) :: Coord is next to previous coordinate (e.g. should not be A1, A3)
+                            // if coordinates are not next to previous coordinates
+                            ((abs((int)tempxLetter - prevX > 1)) || (abs(tempyNumber - prevY) > 1))
+                            // if coordinates overlap with previous coord
+                            || ((abs((int)tempxLetter - prevX) == 0) && (abs(tempyNumber - prevY) == 0))
+
+                        )
+                        {
+                            std::cout << "[SYSTEM] - Must enter a new coordinate that is next to your previous coordinate." << std::endl; // inform player of the error
+                            std::cout << "[SYSTEM] - Previous Coordinate : " << (char)prevX << ", " << prevY << std::endl; // tells player the previous coordinates
+                        }
+                        else // otherwise...
+                        {
+                            if (!isOverlapCoord(player2,tempxLetter, tempyNumber)) // if coordinates are not overlapping
+                            {
+                                isValidCoord = true; // set coordinates as valid
+                            }
+                            else // otherwise...
+                            {
+                                std::cout << "[SYSTEM] - Coordinate overlapes with existing coordinate!" << std::endl; // inform player of the error
+                                std::cout << "[SYSTEM] - Overlapping Coordinate : " << tempxLetter << ", " << tempyNumber << std::endl; // inform player which coordinates overlap
+                            }
+                        }
+                    }
+                } while (!isValidCoord); // loop while coordinates are invalid
+                prevX = (int)tempxLetter; // sets 'prevX' as the ASCII of 'tempxLetter'
+                prevY = tempyNumber; // sets 'prevY' as 'tempyNumber'
+                player2->addShip(i - 1, j, tempxLetter, tempyNumber, i); // temp line - Lee
+                player2->getShipInfo(i - 1, j);                          // temp line - Lee :: it seems like it is updating the information above function.
+                std::cout << std::endl; // new line
+                std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // informs player on whos board it is
+                std::cout << "-------------------" << std::endl; // extra spacing
+                player2->printShipBoard(); // print player 2s board
+                std::cout << std::endl; // new line
+            }
+        }
+        for (int i = 0; i < 100; i++) // loop 100 times
+        {
+            std::cout << std::endl; // new line (effectively clears command prompt)
         }
     }
-    for (int i = 0; i < 100; i++) // loop 100 times
+    else// our ai stuff
     {
-        std::cout << std::endl; // new line (effectively clears command prompt)
+        char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};
+        char randX;
+        int randY = 0;
+        int index;
+        bool isValidCoord = false; // declare bool isValidCoord initialized to false
+        char previousX;
+        int previousY = 0;
+        std::random_device rd; // obtain a random number from hardware
+        std::mt19937 gen(rd()); // seed the generator
+        std::uniform_int_distribution<> distr(0, 9); // define the range
+        std::uniform_int_distribution<> distr_y(0, 10); // define the range
+        randX = convertLetter[distr(gen)]; //Ai places ship 1 at any X coordinate (A-J)
+        randY = distr(gen); //Ai places ship 1 at any Y coordinate (0-9)
+        player2->addShip(0, 0, randX, randY, 1); // adds ship to ai's board
+        player2->getShipInfo(0, 0);  // outputs to user where ai placed their ship (will delete later)          
+        std::cout << std::endl; // new line
+        std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
+        std::cout << "-------------------" << std::endl; // extra spacing
+        player2->printShipBoard(); // print player 2s board
+        std::cout << std::endl; // new line
+        
+        /* AI - Ship creation when shipAmount is more than 1 */
+        for (int i = 2; i <= shipAmount; i++) // for the second ship and each one after...
+        {
+            for (int j = 0; j < i; j++) // for each coordinate of the new ship...
+            {
+                if(j==0)
+                {
+                    do
+                    {
+                        randX = convertLetter[distr(gen)]; //Ai places ship 
+                        randY = distr(gen); //Ai places ship 
+                    } while (isOverlapCoord(player2, randX, randY));
+                    previousX = randX;
+                    previousY = randY;
+                    player2->addShip(i - 1, j, randX, randY, i); 
+                    player2->getShipInfo(i - 1, j);                        
+                    std::cout << std::endl; // new line
+                    std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
+                    std::cout << "-------------------" << std::endl; // extra spacing
+                    player2->printShipBoard(); // print player 2s board
+                    std::cout << std::endl; // new line
+                }
+                else
+                {
+                    do
+                    {
+                        randX = convertLetter[distr(gen)];
+                        randY = distr(gen);
+                        for(int k=0; k < 9; k++)
+                        {
+                            if(randX == convertLetter[k])
+                            {
+                                index = k;
+                            }
+                        }
+                        if( (abs(randY-previousY)==1) && (previousX == randX) )
+                        {
+                            isValidCoord = true; 
+                        }
+                        else if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) )
+                        {
+                            isValidCoord = true;
+                        }
+                        else
+                        {
+                            isValidCoord = false;
+                        }
+                        std::cout << "randY == " << randY << "\n";
+                        std::cout << "previousY == " << previousY << "\n";
+                        std::cout << "abs(randY-previousY) == " << abs(randY-previousY) << "\n";
+                        std::cout << "randX == " << randX << "\n";
+                        std::cout << "previousX == " << previousX << "\n";
+                        std::cout << "convertLetter[index+1] == " << convertLetter[index+1] << "\n";
+                        std::cout << "convertLetter[index-1] == " << convertLetter[index-1] << "\n";
+                    }while(!isValidCoord || isOverlapCoord(player2, randX, randY));
+                    previousX = randX;
+                    previousY = randY;
+                    player2->addShip(i - 1, j, randX, randY, i); 
+                    player2->getShipInfo(i - 1, j);                        
+                    std::cout << std::endl; // new line
+                    std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
+                    std::cout << "-------------------" << std::endl; // extra spacing
+                    player2->printShipBoard(); // print player 2s board
+                    std::cout << std::endl; // new line
+                }
+            }
+        }
     }
 }
 
@@ -516,68 +690,256 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
         }
         // printBoardP1();
 
-        if (!gameFinished) // if the game isn't finished...
+        if (!ai)
         {
-            sleep(3); //wait three seconds
-            for (int i = 0; i < 100; i++) // loop 100 times
+            if (!gameFinished) // if the game isn't finished...
             {
-                std::cout << std::endl; // new line (effectively clearing the command prompt)
-            }
-            std::cout << "PLAYER 2 ATTACK BOARD (R=hit W=miss)" << std::endl; // inform that it's player 2s turn with a basic key
-            std::cout << "------------------------------------" << std::endl; // extra spacing
-            player2->printAttackBoard(); // print player 2s attack board
-            std::cout << std::endl; // new line
-            /* PLAYER 2 : Guessing Coordinates */
-            do // loop at least once
-            {
-                std::cout << "[ATTACK] Player 2 - enter X coordinate (A-J): "; // ask for x coordinate
-                std::cin >> xGuess; // store player input
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // if double input such as AA, will only take A as input
-                if ((int)xGuess < 65 || (int)xGuess > 74) // if ASCII of player input isn't between 65 and 74 (A - J)...
+                sleep(3); //wait three seconds
+                for (int i = 0; i < 100; i++) // loop 100 times
                 {
-                    std::cout << "Must enter letter between A and J\n"; // inform player of the error
+                    std::cout << std::endl; // new line (effectively clearing the command prompt)
                 }
-            } while ((int)xGuess < 65 || (int)xGuess > 74); // loop while error persists
-            // std::cout << xGuess << '\n';
-            do
-            {
-                std::cout << "[ATTACK] Player 2 - enter Y coordinate (1-10): "; // ask player for y coordinate
-                std::cin >> yGuess; // store player input
-
-                while (std::cin.fail()) // loop while an error occurs
+                std::cout << "PLAYER 2 ATTACK BOARD (R=hit W=miss)" << std::endl; // inform that it's player 2s turn with a basic key
+                std::cout << "------------------------------------" << std::endl; // extra spacing
+                player2->printAttackBoard(); // print player 2s attack board
+                std::cout << std::endl; // new line
+                /* PLAYER 2 : Guessing Coordinates */
+                do // loop at least once
                 {
-                    std::cin.clear(); // clear cache
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // test for duplicate inputs
-
-                    std::cout << "[ATTACK] Player 2 - enter Y coordinate (1-10): "; // ask to re-enter y coordinate
+                    std::cout << "[ATTACK] Player 2 - enter X coordinate (A-J): "; // ask for x coordinate
+                    std::cin >> xGuess; // store player input
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // if double input such as AA, will only take A as input
+                    if ((int)xGuess < 65 || (int)xGuess > 74) // if ASCII of player input isn't between 65 and 74 (A - J)...
+                    {
+                        std::cout << "Must enter letter between A and J\n"; // inform player of the error
+                    }
+                } while ((int)xGuess < 65 || (int)xGuess > 74); // loop while error persists
+                // std::cout << xGuess << '\n';
+                do
+                {
+                    std::cout << "[ATTACK] Player 2 - enter Y coordinate (1-10): "; // ask player for y coordinate
                     std::cin >> yGuess; // store player input
-                }
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore duplicates
-                if (yGuess < 1 || yGuess > 10) // if player input isn't between 1 and 10...
+
+                    while (std::cin.fail()) // loop while an error occurs
+                    {
+                        std::cin.clear(); // clear cache
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // test for duplicate inputs
+
+                        std::cout << "[ATTACK] Player 2 - enter Y coordinate (1-10): "; // ask to re-enter y coordinate
+                        std::cin >> yGuess; // store player input
+                    }
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore duplicates
+                    if (yGuess < 1 || yGuess > 10) // if player input isn't between 1 and 10...
+                    {
+                        std::cout << "Must enter number between 1 and 10\n"; // inform player of the error
+                    }
+
+                } while (yGuess < 1 || yGuess > 10); // loop while the error persists
+                // std::cout << yGuess << '\n';
+
+                /* Where we need to update new board */
+                if (player1->shipAttacked(xGuess, yGuess)) // if the attack hit a ship...
                 {
-                    std::cout << "Must enter number between 1 and 10\n"; // inform player of the error
+                    // 65 is A, to make A number 1 index, -64
+                    //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                    (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
+                    if (player1->allShipDown()) // if all the ships are sunk
+                    {
+                        finishGame(2); // finish the game 
+                    }
                 }
-
-            } while (yGuess < 1 || yGuess > 10); // loop while the error persists
-            // std::cout << yGuess << '\n';
-
-            /* Where we need to update new board */
-            if (player1->shipAttacked(xGuess, yGuess)) // if the attack hit a ship...
+                else // otherwise
+                {
+                    //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                    (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
+                }
+                // printBoardP2();
+            }
+        }
+        else{
+            if (ai_mode == 1) // easy mode
             {
-                // 65 is A, to make A number 1 index, -64
-                //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
-                (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
-                if (player1->allShipDown()) // if all the ships are sunk
+                if (!gameFinished) // if the game isn't finished...
                 {
-                    finishGame(2); // finish the game 
+                    ////Setup for random
+                    std::random_device rd;
+                    std::default_random_engine e1(rd());
+                    ////
+
+                    sleep(3); //wait three seconds
+                    std::cout << std::endl; // new line
+                    std::cout << "AI ATTACK BOARD" << std::endl; // lets player know it's AI's turn
+                    std::cout << "------------------------------------" << std::endl; // extra spacing
+                    player2->printAttackBoard(); // print player AI's attack board
+                    std::cout << std::endl; // new line
+
+                    /* AI : Guessing Coordinates */
+                    std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                    char xChoices[] = {'A','B','C','D','E','F','G','H','I','J'};
+                    std::uniform_int_distribution<int> random_x(0, 9); // sets random_x to generate a random integer (an index for xChoices) between 0 and 9 inclusive
+                    xGuess = xChoices[random_x(e1)];
+                    std::cout << xGuess << "\n";
+                    
+                    std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                    std::uniform_int_distribution<int> random_y(1, 10); // sets random_y to generate a random integer between 1 and 10 inclusive
+                    yGuess = random_y(e1);
+                    std::cout << yGuess << "\n";
+
+                    /* Where we need to update new board */
+                    if (player1->shipAttacked(xGuess, yGuess)) // if the attack hit a ship...
+                    {
+                        // 65 is A, to make A number 1 index, -64
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
+                        if (player1->allShipDown()) // if all the ships are sunk
+                        {
+                            finishGame(2); // finish the game 
+                        }
+                    }
+                    else // otherwise
+                    {
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
+                    }
+                    // printBoardP2();
                 }
             }
-            else // otherwise
+            if (ai_mode == 2) // smart mode
             {
-                //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-                (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
+                if (!gameFinished) // if the game isn't finished...
+                {
+
+                    int tempx = xGuess; // tempx is equal to last x guess from AI
+                    int tempy = yGuess; // tempy is equal to last y guess from AI
+
+                    ////Setup for random
+                    std::random_device rd;
+                    std::default_random_engine e1(rd());
+                    ////
+
+                    sleep(3); //wait three seconds
+                    std::cout << std::endl; // new line
+                    std::cout << "AI ATTACK BOARD" << std::endl; // lets player know it's AI's turn
+                    std::cout << "------------------------------------" << std::endl; // extra spacing
+                    player2->printAttackBoard(); // print player AI's attack board
+                    std::cout << std::endl; // new line
+
+                    if((player2->getAttackBoard())[tempy][(int)(tempx-64)] == 'R')
+                    {
+                        //goes right first
+                        /* AI : Guessing Coordinates */
+                            std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                            xGuess = tempx + 1;
+                            tempx = xGuess;
+                            std::cout << xGuess << "\n";
+                            
+                            std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                            yGuess = tempy;
+                            std::cout << yGuess << "\n";
+                    }
+                    else  // Initial AI attack and if a ship was not hit last turn
+                    {
+                        /* AI : Guessing Coordinates */
+                            std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                            char xChoices[] = {'A','B','C','D','E','F','G','H','I','J'};
+                            std::uniform_int_distribution<int> random_x(0, 9); // sets random_x to generate a random integer (an index for xChoices) between 0 and 9 inclusive
+                            xGuess = xChoices[random_x(e1)];
+                            tempx = xGuess;
+                            std::cout << xGuess << "\n";
+                            
+                            std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                            std::uniform_int_distribution<int> random_y(1, 10); // sets random_y to generate a random integer between 1 and 10 inclusive
+                            yGuess = random_y(e1);
+                            tempy = yGuess;
+                            std::cout << yGuess << "\n";
+                    }
+
+                    /* Where we need to update new board */
+                    if (player1->shipAttacked(xGuess,yGuess)) // if the attack hit a ship...
+                    {
+                        // 65 is A, to make A number 1 index, -64
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
+                        if (player1->allShipDown()) // if all the ships are sunk
+                        {
+                            finishGame(2); // finish the game 
+                        }
+                    }
+                    else // otherwise
+                    {
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
+                    }
+                    // printBoardP2();
+                    
+                }
             }
-            // printBoardP2();
+            if (ai_mode == 3) // hacker mode
+            {
+                if (!gameFinished) // if the game isn't finished...
+                {
+                    sleep(3); //wait three seconds
+                    for (int i = 0; i < 100; i++) // loop 100 times
+                    {
+                        std::cout << std::endl; // new line (effectively clearing the command prompt)
+                    }
+                    std::cout << "PLAYER 2 ATTACK BOARD (R=hit W=miss)" << std::endl; // inform that it's player 2s turn with a basic key
+                    std::cout << "------------------------------------" << std::endl; // extra spacing
+                    player2->printAttackBoard(); // print player 2s attack board
+                    std::cout << std::endl; // new line
+                    /* PLAYER 2 : Guessing Coordinates */
+                    do // loop at least once
+                    {
+                        std::cout << "[ATTACK] Player 2 - enter X coordinate (A-J): "; // ask for x coordinate
+                        std::cin >> xGuess; // store player input
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // if double input such as AA, will only take A as input
+                        if ((int)xGuess < 65 || (int)xGuess > 74) // if ASCII of player input isn't between 65 and 74 (A - J)...
+                        {
+                            std::cout << "Must enter letter between A and J\n"; // inform player of the error
+                        }
+                    } while ((int)xGuess < 65 || (int)xGuess > 74); // loop while error persists
+                    // std::cout << xGuess << '\n';
+                    do
+                    {
+                        std::cout << "[ATTACK] Player 2 - enter Y coordinate (1-10): "; // ask player for y coordinate
+                        std::cin >> yGuess; // store player input
+
+                        while (std::cin.fail()) // loop while an error occurs
+                        {
+                            std::cin.clear(); // clear cache
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // test for duplicate inputs
+
+                            std::cout << "[ATTACK] Player 2 - enter Y coordinate (1-10): "; // ask to re-enter y coordinate
+                            std::cin >> yGuess; // store player input
+                        }
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore duplicates
+                        if (yGuess < 1 || yGuess > 10) // if player input isn't between 1 and 10...
+                        {
+                            std::cout << "Must enter number between 1 and 10\n"; // inform player of the error
+                        }
+
+                    } while (yGuess < 1 || yGuess > 10); // loop while the error persists
+                    // std::cout << yGuess << '\n';
+
+                    /* Where we need to update new board */
+                    if (player1->shipAttacked(xGuess, yGuess)) // if the attack hit a ship...
+                    {
+                        // 65 is A, to make A number 1 index, -64
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
+                        if (player1->allShipDown()) // if all the ships are sunk
+                        {
+                            finishGame(2); // finish the game 
+                        }
+                    }
+                    else // otherwise
+                    {
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
+                    }
+                    // printBoardP2();
+                }
+            }
         }
         sleep(3); // wait 3 seconds
     }

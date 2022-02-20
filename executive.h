@@ -6,7 +6,6 @@ class Executive
 {
 public:
     void run(); // declares the run function 
-    void run_ai();
 
 private:
     Game myGame; // creates an instance of the game class in private scope of the executive class
