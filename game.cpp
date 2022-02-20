@@ -580,7 +580,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                             isValidCoord = true; 
                             vertical = true;
                         }
-                        else if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) )
+                        else if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
                         {
                             isValidCoord = true;
                             vertical = false;
@@ -589,13 +589,6 @@ void Game::obtainShips() // game class function 'obtainShips'
                         {
                             isValidCoord = false;
                         }
-                        std::cout << "randY == " << randY << "\n";
-                        std::cout << "previousY == " << previousY << "\n";
-                        std::cout << "abs(randY-previousY) == " << abs(randY-previousY) << "\n";
-                        std::cout << "randX == " << randX << "\n";
-                        std::cout << "previousX == " << previousX << "\n";
-                        std::cout << "convertLetter[index+1] == " << convertLetter[index+1] << "\n";
-                        std::cout << "convertLetter[index-1] == " << convertLetter[index-1] << "\n";
                     }while(!isValidCoord || isOverlapCoord(player2, randX, randY));
                     previousX = randX;
                     previousY = randY;
@@ -634,7 +627,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                         }
                         else
                         {
-                            if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) )
+                            if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
                             {
                                 isValidCoord = true;
                             }
@@ -643,13 +636,6 @@ void Game::obtainShips() // game class function 'obtainShips'
                                 isValidCoord = false;
                             }
                         }
-                        std::cout << "randY == " << randY << "\n";
-                        std::cout << "previousY == " << previousY << "\n";
-                        std::cout << "abs(randY-previousY) == " << abs(randY-previousY) << "\n";
-                        std::cout << "randX == " << randX << "\n";
-                        std::cout << "previousX == " << previousX << "\n";
-                        std::cout << "convertLetter[index+1] == " << convertLetter[index+1] << "\n";
-                        std::cout << "convertLetter[index-1] == " << convertLetter[index-1] << "\n";
                     }while(!isValidCoord || isOverlapCoord(player2, randX, randY));
                     previousX = randX;
                     previousY = randY;
