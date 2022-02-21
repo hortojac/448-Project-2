@@ -529,7 +529,7 @@ void Game::obtainShips() // game class function 'obtainShips'
         std::random_device rd; // obtain a random number from hardware
         std::mt19937 gen(rd()); // seed the generator
         std::uniform_int_distribution<> distr_x(0, 9); // define the range
-        std::uniform_int_distribution<> distr_y(0, 10); // define the range
+        std::uniform_int_distribution<> distr_y(1, 10); // define the range
         randX = convertLetter[distr_x(gen)]; //Ai places ship 1 at any X coordinate (A-J)
         randY = distr_y(gen); //Ai places ship 1 at any Y coordinate (0-9)
         player2->addShip(0, 0, randX, randY, 1); // adds ship to ai's board
