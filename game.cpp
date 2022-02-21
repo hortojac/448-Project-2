@@ -518,26 +518,26 @@ void Game::obtainShips() // game class function 'obtainShips'
     }
     else// our ai stuff
     {
-        char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};
-        char randX;
-        int randY = 0;
-        int index;
-        bool isValidCoord = false; // declare bool isValidCoord initialized to false
-        bool vertical = false;
-        char previousX;
-        int previousY = 0;
+        char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'}; //this array is called in order to convert a number into a char
+        char randX; //variable that will store the letter of the column where the ai is placing their ship
+        int randY = 0; //variable that will store the number of the row where the ai is placing their ship
+        int index; //variable used to convert a chart back into an int
+        bool isValidCoord = false; // bool to check if the index is a valid coordinate
+        bool vertical = false; //bool to check if the ai has begun placing their ships horizontal or vertical
+        char previousX; //stores the previous column letter of the index placed
+        int previousY = 0; //stores the previous row number of the index placed
         std::random_device rd; // obtain a random number from hardware
         std::mt19937 gen(rd()); // seed the generator
-        std::uniform_int_distribution<> distr_x(0, 9); // define the range
-        std::uniform_int_distribution<> distr_y(1, 10); // define the range
+        std::uniform_int_distribution<> distr_x(0, 9); // define the range for the random numbers
+        std::uniform_int_distribution<> distr_y(1, 10); // define the range for the random numbers
         randX = convertLetter[distr_x(gen)]; //Ai places ship 1 at any X coordinate (A-J)
-        randY = distr_y(gen); //Ai places ship 1 at any Y coordinate (0-9)
+        randY = distr_y(gen); //Ai places ship 1 at any Y coordinate (1-10)
         player2->addShip(0, 0, randX, randY, 1); // adds ship to ai's board
-        player2->getShipInfo(0, 0);  // outputs to user where ai placed their ship (will delete later)          
+        player2->getShipInfo(0, 0);  // outputs to user what index the ai placed their ship (will delete later)          
         std::cout << std::endl; // new line
-        std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
-        std::cout << "-------------------" << std::endl; // extra spacing
-        player2->printShipBoard(); // print player 2s board
+        std::cout << "AI SHIP BOARD" << std::endl; 
+        std::cout << "-------------------" << std::endl; 
+        player2->printShipBoard(); // print ais board (will delete later)
         std::cout << std::endl; // new line
         
         /* AI - Ship creation when shipAmount is more than 1 */
@@ -545,78 +545,80 @@ void Game::obtainShips() // game class function 'obtainShips'
         {
             for (int j = 0; j < i; j++) // for each coordinate of the new ship...
             {
-                if(j==0)
+                if(j==0)//if a new ship is being placed
                 {
                     do
                     {
-                        randX = convertLetter[distr_x(gen)]; //Ai places ship 
-                        randY = distr_y(gen); //Ai places ship 
-                    } while (isOverlapCoord(player2, randX, randY));
-                    previousX = randX;
-                    previousY = randY;
-                    player2->addShip(i - 1, j, randX, randY, i); 
-                    player2->getShipInfo(i - 1, j);                        
+                        randX = convertLetter[distr_x(gen)]; //Ai generates random x coordinate (letter)
+                        randY = distr_y(gen); //Ai generates random y coordinate (number)
+                    } while (isOverlapCoord(player2, randX, randY));//the ai will continue to generate coordinates until an empty index is found
+                    previousX = randX; //store where the x coordinate was placed
+                    previousY = randY; //store where the y coordinate was placed
+                    player2->addShip(i - 1, j, randX, randY, i); //add the coordinate to the ai's board
+                    player2->getShipInfo(i - 1, j); // outputs to user what index the ai placed their ship (will delete later)                          
                     std::cout << std::endl; // new line
                     std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
                     std::cout << "-------------------" << std::endl; // extra spacing
-                    player2->printShipBoard(); // print player 2s board
+                    player2->printShipBoard(); // print ais board (will delete later)
                     std::cout << std::endl; // new line
                 }
-                else if(j==1)
+                else if(j==1)//if the second coordinate of a ship is being placed 
                 {
                     do
                     {
-                        randX = convertLetter[distr_x(gen)];
-                        randY = distr_y(gen);
-                        for(int k=0; k <= 9; k++)
+                        randX = convertLetter[distr_x(gen)]; //Ai generates random x coordinate (letter)
+                        randY = distr_y(gen); //Ai generates random y coordinate (number)
+                        for(int k=0; k <= 9; k++) //loop to go through every possible letter
                         {
-                            if(randX == convertLetter[k])
+                            if(randX == convertLetter[k])//if the random letter generated is equal to one of the possible letters...
                             {
-                                index = k;
+                                index = k;//store what position in the array that random letter is 
                             }
                         }
-                        if( (abs(randY-previousY)==1) && (previousX == randX) )
+
+                        if( (abs(randY-previousY)==1) && (previousX == randX) )//if the second value of the ship being placed is one row above or below the previous row and in the same column...
                         {
-                            isValidCoord = true; 
-                            vertical = true;
+                            isValidCoord = true; //this is a valid coordinate
+                            vertical = true; //record that the ai is starting to place their ships vertically
                         }
-                        else if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
+                        else if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )//if the second value is in the same row as the original coordinate and one column to the left/right...
                         {
-                            isValidCoord = true;
-                            vertical = false;
+                            isValidCoord = true;//this is a valid coordinate
+                            vertical = false;//record that the ai is starting to placed their ships horizontally
                         }
                         else
                         {
-                            isValidCoord = false;
+                            isValidCoord = false;//this is not a valid coordinate
                         }
-                    }while(!isValidCoord || isOverlapCoord(player2, randX, randY));
-                    previousX = randX;
-                    previousY = randY;
-                    isValidCoord = false;
-                    player2->addShip(i - 1, j, randX, randY, i); 
-                    player2->getShipInfo(i - 1, j);                        
+                    }while(!isValidCoord || isOverlapCoord(player2, randX, randY));//this function will continue to run if the ai did not generate a valid coordinate or if the coordinate generated overlaps with a previous coordinate
+                    previousX = randX; //store where the x coordinate was placed
+                    previousY = randY; //store where the y coordinate was placed
+                    isValidCoord = false; //reset isValidCoord back to false
+                    player2->addShip(i - 1, j, randX, randY, i); //add the coordinate to the ai's board
+                    player2->getShipInfo(i - 1, j); // outputs to user what index the ai placed their ship (will delete later)                                       
                     std::cout << std::endl; // new line
                     std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
                     std::cout << "-------------------" << std::endl; // extra spacing
-                    player2->printShipBoard(); // print player 2s board
+                    player2->printShipBoard(); // print ai's board (will delete later)
                     std::cout << std::endl; // new line
                 }
-                else
+                else//if the third, fourth, or fifth coordinate of a ship is being placed 
                 {
                     do
                     {
-                        randX = convertLetter[distr_x(gen)];
-                        randY = distr_y(gen);
-                        for(int k=0; k <= 9; k++)
+                        randX = convertLetter[distr_x(gen)]; //Ai generates random x coordinate (letter)
+                        randY = distr_y(gen); //Ai generates random y coordinate (letter)
+                        for(int k=0; k <= 9; k++) //loop to go through every possible letter
                         {
-                            if(randX == convertLetter[k])
+                            if(randX == convertLetter[k])//if the random letter generated is equal to one of the possible letters...
                             {
-                                index = k;
+                                index = k; //store what position in the array that random letter is 
                             }
                         }
-                        if(vertical)
+
+                        if(vertical)//if the second coordinate was placed vertically to the original
                         {
-                            if( (abs(randY-previousY)==1) && (previousX == randX) )
+                            if( (abs(randY-previousY)==1) && (previousX == randX) ) 
                             {
                                 isValidCoord = true; 
                             }
@@ -629,7 +631,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                                 isValidCoord = false;
                             }
                         }
-                        else
+                        else // if the second coordinate was placed horizontally to the original
                         {
                             if(abs(randY-previousY)==0)
                             {
@@ -638,6 +640,10 @@ void Game::obtainShips() // game class function 'obtainShips'
                                     isValidCoord = true;
                                 }
                                 else if( (previousX == convertLetter[index-1]) && ((index-1)>=0) )
+                                {
+                                    isValidCoord = true;
+                                }
+                                else if(isHorizontalTo(player2, randX, randY, i))
                                 {
                                     isValidCoord = true;
                                 }
@@ -694,11 +700,11 @@ bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shi
                         index_2 = k;
                     }
                 }
-                if (thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index-1) // if the coordinates overlap
+                if (thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index-1) 
                 {
                     return true; 
                 }
-                else if(thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index+1) // if the coordinates overlap
+                else if(thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index+1) 
                 {
                     return true;
                 }
@@ -716,11 +722,11 @@ bool Game::isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipN
         {
             if(i==shipNumber-1)
             {
-                if (thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber-1) // if the coordinates overlap
+                if (thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber-1) 
                 {
                     return true; // returns true 
                 }
-                else if(thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber+1) // if the coordinates overlap
+                else if(thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber+1) 
                 {
                     return true;
                 }
