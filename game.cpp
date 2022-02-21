@@ -668,6 +668,46 @@ void Game::obtainShips() // game class function 'obtainShips'
     }
 }
 
+bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) 
+{
+    char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};
+    int index = 0;
+    int index_2 = 0;
+    for(int k=0; k <= 9; k++)
+    {
+        if(xLetter == convertLetter[k])
+        {
+            index = k;
+        }
+    }
+
+    for (int i = 0; i < shipAmount; i++) // for each ship
+    {
+        for (int j = 0; j < (i + 1); j++) // for each position of coordinates
+        {
+            if(i==shipNumber-1)
+            {
+                for(int k=0; k<=9; k++)
+                {
+                    if(thisPlayer->getShip(i)->getXCoord(j) == convertLetter[k])
+                    {
+                        index_2 = k;
+                    }
+                }
+                if (thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index-1) // if the coordinates overlap
+                {
+                    return true; 
+                }
+                else if(thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index+1) // if the coordinates overlap
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false; // returns false
+}
+
 bool Game::isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) 
 {
     for (int i = 0; i < shipAmount; i++) // for each ship
