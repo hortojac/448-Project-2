@@ -568,7 +568,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                     {
                         randX = convertLetter[distr_x(gen)];
                         randY = distr_y(gen);
-                        for(int k=0; k < 9; k++)
+                        for(int k=0; k <= 9; k++)
                         {
                             if(randX == convertLetter[k])
                             {
@@ -580,7 +580,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                             isValidCoord = true; 
                             vertical = true;
                         }
-                        else if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
+                        else if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
                         {
                             isValidCoord = true;
                             vertical = false;
@@ -607,7 +607,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                     {
                         randX = convertLetter[distr_x(gen)];
                         randY = distr_y(gen);
-                        for(int k=0; k < 9; k++)
+                        for(int k=0; k <= 9; k++)
                         {
                             if(randX == convertLetter[k])
                             {
@@ -627,7 +627,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                         }
                         else
                         {
-                            if( (abs(randY-previousY)==0) && ((randX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
+                            if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
                             {
                                 isValidCoord = true;
                             }
