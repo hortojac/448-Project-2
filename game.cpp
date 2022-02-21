@@ -670,18 +670,17 @@ void Game::obtainShips() // game class function 'obtainShips'
 
 bool Game::isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) 
 {
-    // Input Check (3) :: if input overlaps with coordinates of existing ship
     for (int i = 0; i < shipAmount; i++) // for each ship
     {
         for (int j = 0; j < (i + 1); j++) // for each position of coordinates
         {
-            if((i==shipNumber) && (thisPlayer->getShip(i)->getXCoord(j) == xLetter))
+            if(i==shipNumber-1)
             {
-                if( ( yNumber-1>=1) && (thisPlayer->getShip(i)->getYCoord(j) == yNumber-1) )
+                if (thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber-1) // if the coordinates overlap
                 {
-                    return true;
+                    return true; // returns true 
                 }
-                else if( (yNumber+1<=10) && (thisPlayer->getShip(i)->getYCoord(j) == yNumber+1) )
+                else if(thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber+1) // if the coordinates overlap
                 {
                     return true;
                 }
