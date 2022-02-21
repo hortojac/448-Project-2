@@ -20,6 +20,8 @@ public:
     void playerGuess(); //declares playerGuess function with public scope
     void labels(); //declares labels function with public scope
     bool isOverlapCoord(Player* thisPlayer, char xLetter, int yNumber);
+    bool isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber);
+    bool isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber);
     void finishGame(int playerID); //declares finishGame function with public scope
     void easyMode(int ship);
     void smartMode(int ship);

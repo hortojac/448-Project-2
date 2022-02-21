@@ -620,6 +620,10 @@ void Game::obtainShips() // game class function 'obtainShips'
                             {
                                 isValidCoord = true; 
                             }
+                            else if(isVerticalTo(player2, randX, randY, i))
+                            {
+                                isValidCoord = true;
+                            }
                             else
                             {
                                 isValidCoord = false;
@@ -627,9 +631,20 @@ void Game::obtainShips() // game class function 'obtainShips'
                         }
                         else
                         {
-                            if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )
+                            if(abs(randY-previousY)==0)
                             {
-                                isValidCoord = true;
+                                if( (previousX == convertLetter[index+1]) && ((index+1)<=9) )
+                                {
+                                    isValidCoord = true;
+                                }
+                                else if( (previousX == convertLetter[index-1]) && ((index-1)>=0) )
+                                {
+                                    isValidCoord = true;
+                                }
+                                else
+                                {
+                                    isValidCoord = false;
+                                }
                             }
                             else
                             {
@@ -651,6 +666,29 @@ void Game::obtainShips() // game class function 'obtainShips'
             }
         }
     }
+}
+
+bool Game::isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) 
+{
+    // Input Check (3) :: if input overlaps with coordinates of existing ship
+    for (int i = 0; i < shipAmount; i++) // for each ship
+    {
+        for (int j = 0; j < (i + 1); j++) // for each position of coordinates
+        {
+            if((i==shipNumber) && (thisPlayer->getShip(i)->getXCoord(j) == xLetter))
+            {
+                if( ( yNumber-1>=1) && (thisPlayer->getShip(i)->getYCoord(j) == yNumber-1) )
+                {
+                    return true;
+                }
+                else if( (yNumber+1<=10) && (thisPlayer->getShip(i)->getYCoord(j) == yNumber+1) )
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false; // returns false
 }
 
 bool Game::isOverlapCoord(Player* thisPlayer, char xLetter, int yNumber) // game class 'isOverlapCoord' function inputs the player class and coordinates and returns bool if they overlap
