@@ -26,6 +26,7 @@ public:
     void easyMode(int ship);
     void smartMode(int ship);
     void hackerMode(int ship);
+    int ConvertToNumber(char letter);
     int row = 11; //declares an integer 'row' in public scope set to 11
     int col = 11; //declares an integer 'col' in public scope set to 11
     int shipAmount; //declares an integer 'shipAmount' in public scope set to null

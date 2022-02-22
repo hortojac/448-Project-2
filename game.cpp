@@ -714,6 +714,18 @@ bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shi
     return false; // this is not a valid coordinate to place the next ship coordinate and thus another two values should be generated
 }
 
+int Game::ConvertToNumber(char letter)
+{
+    char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};//used to convert char to int
+    for(int k=0; k <= 9; k++)//loop to go through every possible letter
+    {
+        if(letter == convertLetter[k]) //if the random letter generated is equal to one of the possible letters...
+        {
+            return k;
+        }
+    }
+}
+
 bool Game::isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) 
 {
     for (int i = 0; i < shipAmount; i++) // for each ship
