@@ -618,55 +618,55 @@ void Game::obtainShips() // game class function 'obtainShips'
 
                         if(vertical)//if the second coordinate was placed vertically to the original
                         {
-                            if( (abs(randY-previousY)==1) && (previousX == randX) ) 
+                            if( (abs(randY-previousY)==1) && (previousX == randX) ) //if the second value of the ship being placed is one row above or below the previous row and in the same column...
                             {
-                                isValidCoord = true; 
+                                isValidCoord = true; //this is a valid coordinate
                             }
-                            else if(isVerticalTo(player2, randX, randY, i))
+                            else if(isVerticalTo(player2, randX, randY, i))//if the the ship is being blocked by another ship or the border of the board, then try placing in the other direction to fit the rest of the ship
                             {
-                                isValidCoord = true;
+                                isValidCoord = true; //this is a valid coordinate 
                             }
                             else
                             {
-                                isValidCoord = false;
+                                isValidCoord = false; //this is not a valid coordinate
                             }
                         }
                         else // if the second coordinate was placed horizontally to the original
                         {
-                            if(abs(randY-previousY)==0)
+                            if(abs(randY-previousY)==0)//if the second value is in the same row as the original coordinate 
                             {
-                                if( (previousX == convertLetter[index+1]) && ((index+1)<=9) )
+                                if( (previousX == convertLetter[index+1]) && ((index+1)<=9) )//if the coordiante is to the right of the original index
                                 {
-                                    isValidCoord = true;
+                                    isValidCoord = true;//this is a valid coordinate
                                 }
-                                else if( (previousX == convertLetter[index-1]) && ((index-1)>=0) )
+                                else if( (previousX == convertLetter[index-1]) && ((index-1)>=0) )//if the coordinate is to the left of the original index
                                 {
-                                    isValidCoord = true;
+                                    isValidCoord = true;//this is a valid coordinate
                                 }
-                                else if(isHorizontalTo(player2, randX, randY, i))
+                                else if(isHorizontalTo(player2, randX, randY, i))//if the coordinate is either directly to the left or right of the previous ship coordinates
                                 {
-                                    isValidCoord = true;
+                                    isValidCoord = true;//this is a valid coordinate
                                 }
                                 else
                                 {
-                                    isValidCoord = false;
+                                    isValidCoord = false;//this is not a valid coordinate
                                 }
                             }
                             else
                             {
-                                isValidCoord = false;
+                                isValidCoord = false;//this is not a valid coordinate
                             }
                         }
-                    }while(!isValidCoord || isOverlapCoord(player2, randX, randY));
-                    previousX = randX;
-                    previousY = randY;
-                    isValidCoord = false;
-                    player2->addShip(i - 1, j, randX, randY, i); 
-                    player2->getShipInfo(i - 1, j);                        
+                    }while(!isValidCoord || isOverlapCoord(player2, randX, randY));//if the generated coordinate is not valid or overlaps with another ship then generate two coordinates again
+                    previousX = randX; //store where the x coordinate was placed
+                    previousY = randY; //store where the y coordinate was placed
+                    isValidCoord = false; //reset isValidCoord back to false
+                    player2->addShip(i - 1, j, randX, randY, i); //add the coordinate to the ai's board
+                    player2->getShipInfo(i - 1, j);  // outputs to user what index the ai placed their ship (will delete later)                                                         
                     std::cout << std::endl; // new line
                     std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
                     std::cout << "-------------------" << std::endl; // extra spacing
-                    player2->printShipBoard(); // print player 2s board
+                    player2->printShipBoard(); // print ai's board (will delete later)
                     std::cout << std::endl; // new line
                 }
             }
@@ -674,16 +674,16 @@ void Game::obtainShips() // game class function 'obtainShips'
     }
 }
 
-bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) 
+bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) //checks if the ai has started to place their ships horizontally
 {
-    char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};
-    int index = 0;
-    int index_2 = 0;
-    for(int k=0; k <= 9; k++)
+    char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};//used to convert char to int
+    int index = 0;//used to convert random generated column letter to an int
+    int index_2 = 0;//used to convert previously placed ship column letters to an int
+    for(int k=0; k <= 9; k++)//loop to go through every possible letter
     {
-        if(xLetter == convertLetter[k])
+        if(xLetter == convertLetter[k]) //if the random letter generated is equal to one of the possible letters...
         {
-            index = k;
+            index = k;//store what position in the array that random letter is
         }
     }
 
@@ -691,27 +691,27 @@ bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shi
     {
         for (int j = 0; j < (i + 1); j++) // for each position of coordinates
         {
-            if(i==shipNumber-1)
+            if(i==shipNumber-1)// if trying to place a certain ship, we only care about where the previous coordinates of that ship are
             {
-                for(int k=0; k<=9; k++)
+                for(int k=0; k<=9; k++)//loop to go through every possible letter
                 {
-                    if(thisPlayer->getShip(i)->getXCoord(j) == convertLetter[k])
+                    if(thisPlayer->getShip(i)->getXCoord(j) == convertLetter[k])//if the previously placed coordinates of a ship is equal to one of the possible letters...
                     {
-                        index_2 = k;
+                        index_2 = k;//store what position in the array that coordinate is
                     }
                 }
-                if (thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index-1) 
+                if (thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index-1) //if the random generated y coordinate is in the same row as the previous coordinates and the random generated x coordinate is 1 column to the left of the previously placed ships...
                 {
-                    return true; 
+                    return true; //this is a valid coordinate to place the next ship coordinate
                 }
-                else if(thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index+1) 
+                else if(thisPlayer->getShip(i)->getYCoord(j) == yNumber && index_2 == index+1) //if the random generated y coordinate is in the same row as the previous coordinates and the random generated x coordinate is 1 column to the right of the previously placed ships... 
                 {
-                    return true;
+                    return true;//this is a valid coordinate to place the next ship coordinate
                 }
             }
         }
     }
-    return false; // returns false
+    return false; // this is not a valid coordinate to place the next ship coordinate and thus another two values should be generated
 }
 
 bool Game::isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) 
@@ -720,20 +720,20 @@ bool Game::isVerticalTo(Player* thisPlayer, char xLetter, int yNumber, int shipN
     {
         for (int j = 0; j < (i + 1); j++) // for each position of coordinates
         {
-            if(i==shipNumber-1)
+            if(i==shipNumber-1)// if trying to place a certain ship, we only care about where the previous coordinates of that ship are
             {
-                if (thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber-1) 
+                if (thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber-1) //if the x coordinate being placed is in the same column as the other previously placed coordinates and one row above the previously placed coordinate
                 {
-                    return true; // returns true 
+                    return true; //this is a valid coordinate to place the next ship coordinate
                 }
-                else if(thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber+1) 
+                else if(thisPlayer->getShip(i)->getXCoord(j) == xLetter && thisPlayer->getShip(i)->getYCoord(j) == yNumber+1) //if the x coordinate being placed is in the same column as the other previously placed coordinates and one row below the previously placed coordinate
                 {
-                    return true;
+                    return true; //this is a valid coordinate to place the next ship coordinate
                 }
             }
         }
     }
-    return false; // returns false
+    return false; // this is not a valid coordinate to place the next ship coordinate and thus another two values should be generated
 }
 
 bool Game::isOverlapCoord(Player* thisPlayer, char xLetter, int yNumber) // game class 'isOverlapCoord' function inputs the player class and coordinates and returns bool if they overlap
