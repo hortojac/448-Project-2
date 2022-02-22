@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "ship.h"
+#include <unistd.h> 
 
 class Player
 {

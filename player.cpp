@@ -1,6 +1,7 @@
 #include <iostream>
 #include "player.h"
 
+
 Player::Player(int amountShips) // Player class constructor with the number of ships as an input
 {
     ships = new Ship *[amountShips]; // declares an array of ship pointers equal to the number of ships
@@ -145,8 +146,10 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
                             positionDownCount++;             // add one to positionDownCount
                             if (positionDownCount == length) // if the length of positionDownCount is equal to the length of the ship...
                             {
-                                ships[i]->killShip();                             // ship at the index is killed
+                                ships[i]->killShip(); // ship at the index is killed
                                 std::cout << "[Sank!] - Ship Down!" << std::endl; // player is informed that the ship is sunk
+                                std::string command = "afplay -v 0.7 Assets/sunk.mp3";
+
                             }
                         }
                     }

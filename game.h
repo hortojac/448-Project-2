@@ -27,6 +27,8 @@ public:
     Player *player1; //creates a player1 pointer in the public scope
     Player *player2; //creates a player2 pointer in the public scope
 
+    void playSound(std::string State, int player);
+
 private:
     int **board; // declares an int 'board' in the private scope
 };
