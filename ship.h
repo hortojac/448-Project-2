@@ -12,7 +12,7 @@ class Ship
     void setYCoord(int spotNumber, int value); //void function to set the y cooridnate of the ship
     int getYCoord(int spotNumber); //returns the int of the y coordinate at the specified length spot on the ship
     int getShipLength(); //returns the int of the ship length
-    int isExistingShip(int spotNumber, char xCoord, char yCoord);
+    
     void positionAttacked(int spotNumber); //void function to store the length spot as hit
     bool positionDown(int spotNumber); //bool function returns true if the given length spot is hit
     void killShip(); //void function to set the ship as killed

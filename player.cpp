@@ -257,3 +257,29 @@ int** Player::getAttackBoard()
 {
     return attackBoard;
 }
+
+bool Player::ExistingShip(char xPos, int yPos) 
+// player class function 'shipAttacked' returns true 
+//if the given coordinates match the given coordinates of the ship
+{
+    for (int i = 0; i < numberOfShips; i++) //  by ship index
+    {
+        int length = ships[i]->getShipLength(); 
+        // declares int 'length' and initializes with the value of the length of ship i
+
+        for (int j = 0; j < length; j++) //  by coord index
+        {
+            int xCoord = ships[i]->getXCoord(j);               
+            // declares int 'xCoord' and initializes with the value of ship i x coordinate
+            int yCoord = ships[i]->getYCoord(j);               
+            // declares int 'yCoord' and initializes with the value of ship i y coordinate
+            if ((xCoord == (int)xPos) && (yCoord == yPos)) 
+            // if x and y guesses are one of coord(ship(player))
+            {
+                return true;
+                
+            }
+        }
+    }
+    return false;
+}     

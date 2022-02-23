@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include "player.h"
+#include "ship.h"
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -28,6 +29,7 @@ public:
     Player *player2; //creates a player2 pointer in the public scope
 
     void playSound(std::string State, int player);
+    bool isExistingShip;
 
 private:
     int **board; // declares an int 'board' in the private scope
