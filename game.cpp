@@ -526,6 +526,7 @@ void Game::obtainShips() // game class function 'obtainShips'
         bool vertical = false; //bool to check if the ai has begun placing their ships horizontal or vertical
         char previousX; //stores the previous column letter of the index placed
         int previousY = 0; //stores the previous row number of the index placed
+        char orientation; //states what direction the ai should place their ships (either horizontal vertical or either)
         std::random_device rd; // obtain a random number from hardware
         std::mt19937 gen(rd()); // seed the generator
         std::uniform_int_distribution<> distr_x(0, 9); // define the range for the random numbers
@@ -551,11 +552,12 @@ void Game::obtainShips() // game class function 'obtainShips'
                     {
                         randX = convertLetter[distr_x(gen)]; //Ai generates random x coordinate (letter)
                         randY = distr_y(gen); //Ai generates random y coordinate (number)
-                    } while (isOverlapCoord(player2, randX, randY));//the ai will continue to generate coordinates until an empty index is found
+                    } while (isOverlapCoord(player2, randX, randY)); // || EnoughSpace(randX, randY, i))=='O');//the ai will continue to generate coordinates until an empty/valid index is found
                     previousX = randX; //store where the x coordinate was placed
                     previousY = randY; //store where the y coordinate was placed
                     player2->addShip(i - 1, j, randX, randY, i); //add the coordinate to the ai's board
                     player2->getShipInfo(i - 1, j); // outputs to user what index the ai placed their ship (will delete later)                          
+                    //orientation = EnoughSpace(randX, randY, i);
                     std::cout << std::endl; // new line
                     std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
                     std::cout << "-------------------" << std::endl; // extra spacing
@@ -576,15 +578,22 @@ void Game::obtainShips() // game class function 'obtainShips'
                             }
                         }
 
-                        if( (abs(randY-previousY)==1) && (previousX == randX) )//if the second value of the ship being placed is one row above or below the previous row and in the same column...
+                        if( (abs(randY-previousY)==1) && (previousX == randX))//if the second value of the ship being placed is one row above or below the previous row and in the same column...
                         {
-                            isValidCoord = true; //this is a valid coordinate
-                            vertical = true; //record that the ai is starting to place their ships vertically
+                            //if( (orientation=='V') || (orientation=='B') )
+                            //{
+                                isValidCoord = true; //this is a valid coordinate
+                                vertical = true; //record that the ai is starting to place their ships vertically
+                            //}
                         }
-                        else if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9) )//if the second value is in the same row as the original coordinate and one column to the left/right...
+                        else if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9))//if the second value is in the same row as the original coordinate and one column to the left/right...
                         {
-                            isValidCoord = true;//this is a valid coordinate
-                            vertical = false;//record that the ai is starting to placed their ships horizontally
+                            //if( (orientation=='B') || (orientation=='H') )
+                            //{
+                                isValidCoord = true;//this is a valid coordinate
+                                vertical = false;//record that the ai is starting to placed their ships horizontally
+                        
+                            //}
                         }
                         else
                         {
@@ -673,6 +682,83 @@ void Game::obtainShips() // game class function 'obtainShips'
         }
     }
 }
+
+/*char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
+{
+    bool cont = true;
+    int aboves = 0;
+    int belows = 0;
+    int lefts = 0;
+    int rights = 0;
+
+    //above counter
+    for(int i=0; cont; i++)
+    {
+        if( ((yNumber+i)>10) || (ExistingShip(xLetter, yNumber)) )
+        {
+            cont = false;
+        }
+        else
+        {
+            aboves++;
+        }
+    }
+    //below counter
+    for(int i=0; cont; i++)
+    {
+        if( ((yNumber-i)<1) || (ExistingShip(xLetter, yNumber)) )
+        {
+            cont = false;
+        }
+        else
+        {
+            belows++;
+        }
+    }
+    //right counter
+    for(int i=0; cont; i++)
+    {
+        if( ( (ConvertToNumber(xLetter)+i) >9 ) || (ExistingShip(xLetter, yNumber)) )
+        {
+            cont = false;
+        }
+        else
+        {
+            rights++;
+        }
+    }
+    //left counter
+    for(int i=0; cont; i++)
+    {
+        if( ( (ConvertToNumber(xLetter)-i) <0 ) || (ExistingShip(xLetter, yNumber)) )
+        {
+            cont = false;
+        }
+        else
+        {
+            lefts++;
+        }
+    }
+    //both counter
+    if( ((aboves+belows+1) >= shipNumber) &&  ((lefts+rights+1) >= shipNumber))
+    {
+        return('B');
+    }
+    //vertical counter
+    else if( ((aboves+belows+1) >= shipNumber) )
+    {
+        return('V');
+    }
+    //horizontal counter
+    else if( (lefts+rights+1) >= shipNumber )
+    {
+        return('H');
+    }
+    else
+    {
+        return('O');
+    }
+}*/
 
 bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) //checks if the ai has started to place their ships horizontally
 {
