@@ -599,26 +599,53 @@ void Game::obtainShips() // game class function 'obtainShips'
                             }
                         }
 
-                        if( (abs(randY-previousY)==1) && (previousX == randX))//if the second value of the ship being placed is one row above or below the previous row and in the same column...
+                        /*if(orientation == 'B')
                         {
-                            if( (orientation=='B') || (orientation=='V') )
+                            isValidCoord = true;
+                            std::uniform_int_distribution<> v_or_h(0,1); // randomly selects orientation
+
+                            vertical = 0;//v_or_h(gen);
+                        }*/
+
+
+                        if(orientation == 'B')
+                        {
+                            std::cout << "ENTERED B\n";
+                            std::uniform_int_distribution<> v_or_h(0,1);
+                            if(v_or_h(gen))
+                            {
+                                if( (abs(randY-previousY)==1) && (previousX == randX))//if the second value of the ship being placed is one row above or below the previous row and in the same column...
+                                {
+                                    isValidCoord = true; //this is a valid coordinate
+                                    vertical = true; //record that the ai is starting to place their ships vertically
+                                }
+                            }
+                            else
+                            {
+                                if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9))//if the second value is in the same row as the original coordinate and one column to the left/right...
+                                {
+                                    isValidCoord = true;//this is a valid coordinate
+                                    vertical = false;//record that the ai is starting to placed their ships horizontally
+                                }
+                            }
+                        }
+                        else if(orientation == 'V')
+                        {
+                            std::cout << "ENTERED V\n";
+                            if( (abs(randY-previousY)==1) && (previousX == randX))//if the second value of the ship being placed is one row above or below the previous row and in the same column...
                             {
                                 isValidCoord = true; //this is a valid coordinate
                                 vertical = true; //record that the ai is starting to place their ships vertically
                             }
                         }
-                        else if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9))//if the second value is in the same row as the original coordinate and one column to the left/right...
+                        else if(orientation == 'H')
                         {
-                            if( (orientation=='B') || (orientation=='H') )
+                            std::cout << "ENTERED H\n";
+                            if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9))//if the second value is in the same row as the original coordinate and one column to the left/right...
                             {
                                 isValidCoord = true;//this is a valid coordinate
                                 vertical = false;//record that the ai is starting to placed their ships horizontally
-                        
                             }
-                        }
-                        else
-                        {
-                            isValidCoord = false;//this is not a valid coordinate
                         }
                     }while(!isValidCoord || isOverlapCoord(player2, randX, randY));//this function will continue to run if the ai did not generate a valid coordinate or if the coordinate generated overlaps with a previous coordinate
                     previousX = randX; //store where the x coordinate was placed
@@ -724,6 +751,7 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             aboves++;
         }
     }
+    cont = true;
     //below counter
     for(int i=0; cont; i++)
     {
@@ -736,6 +764,7 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             belows++;
         }
     }
+    cont = true;
     //right counter
     for(int i=0; cont; i++)
     {
@@ -748,6 +777,7 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             rights++;
         }
     }
+    cont = true;
     //left counter
     for(int i=0; cont; i++)
     {
@@ -760,21 +790,21 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             lefts++;
         }
     }
+    cont = true;
     //both counter
     if( ((aboves+belows+1) >= shipNumber) &&  ((lefts+rights+1) >= shipNumber))
     {
         return('B');
     }
-    //vertical counter
-    else if( ((aboves+belows+1) >= shipNumber) )
-    {
-        return('V');
-    }
-    //horizontal counter
     else if( (lefts+rights+1) >= shipNumber )
     {
         return('H');
     }
+    else if( ((aboves+belows+1) >= shipNumber) )
+    {
+        return('V');
+    }
+    
     return('O');
 }
 
