@@ -742,7 +742,7 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     //above counter
     for(int i=1; cont; i++)
     {
-        if( ((yNumber-i)<1) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ((yNumber-i)<1) || (player2->ExistingShip(xLetter, yNumber-i)) )
         {
             cont = false;
         }
@@ -755,7 +755,7 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     //below counter
     for(int i=1; cont; i++)
     {
-        if( ((yNumber+i)>10) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ((yNumber+i)>10) || (player2->ExistingShip(xLetter, yNumber+i)) )
         {
             cont = false;
         }
@@ -768,7 +768,7 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     //right counter
     for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)+1+i) >10 ) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ( (ConvertToNumber(xLetter)+1+i) >10 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1+i, yNumber)) )
         {
             cont = false;
         }
@@ -781,7 +781,7 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     //left counter
     for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)+1-i) <1 ) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ( (ConvertToNumber(xLetter)+1-i) <1 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1-i, yNumber)) )
         {
             cont = false;
         }
