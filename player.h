@@ -23,7 +23,7 @@ class Player
     bool shipAttacked(char xGuess, int yGuess); // returns a bool if the given coordinate matches the ships
     bool allShipDown(); // returns a bool if all ships are sunk
 
-   bool ExistingShip(char xPos, int yPos);
+    bool ExistingShip(char xPos, int yPos);
 
     private:
     Ship** ships; // declares a ship pointer 'ships'
