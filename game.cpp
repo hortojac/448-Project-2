@@ -598,19 +598,8 @@ void Game::obtainShips() // game class function 'obtainShips'
                                 index = k;//store what position in the array that random letter is 
                             }
                         }
-
-                        /*if(orientation == 'B')
-                        {
-                            isValidCoord = true;
-                            std::uniform_int_distribution<> v_or_h(0,1); // randomly selects orientation
-
-                            vertical = 0;//v_or_h(gen);
-                        }*/
-
-
                         if(orientation == 'B')
                         {
-                            std::cout << "ENTERED B\n";
                             std::uniform_int_distribution<> v_or_h(0,1);
                             if(v_or_h(gen))
                             {
@@ -631,7 +620,6 @@ void Game::obtainShips() // game class function 'obtainShips'
                         }
                         else if(orientation == 'V')
                         {
-                            std::cout << "ENTERED V\n";
                             if( (abs(randY-previousY)==1) && (previousX == randX))//if the second value of the ship being placed is one row above or below the previous row and in the same column...
                             {
                                 isValidCoord = true; //this is a valid coordinate
@@ -640,7 +628,6 @@ void Game::obtainShips() // game class function 'obtainShips'
                         }
                         else if(orientation == 'H')
                         {
-                            std::cout << "ENTERED H\n";
                             if( (abs(randY-previousY)==0) && ((previousX == convertLetter[index+1]) || (previousX == convertLetter[index-1])) && ((index-1)>=0) && ((index+1)<=9))//if the second value is in the same row as the original coordinate and one column to the left/right...
                             {
                                 isValidCoord = true;//this is a valid coordinate
