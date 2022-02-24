@@ -1,5 +1,10 @@
 {
     "files.associations": {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        "iostream": "cpp",
+>>>>>>> julia
         "__bit_reference": "cpp",
         "__bits": "cpp",
         "__config": "cpp",
@@ -39,7 +44,10 @@
         "initializer_list": "cpp",
         "ios": "cpp",
         "iosfwd": "cpp",
+<<<<<<< HEAD
         "iostream": "cpp",
+=======
+>>>>>>> julia
         "istream": "cpp",
         "iterator": "cpp",
         "limits": "cpp",
@@ -47,8 +55,15 @@
         "memory": "cpp",
         "mutex": "cpp",
         "new": "cpp",
+<<<<<<< HEAD
         "optional": "cpp",
         "ostream": "cpp",
+=======
+        "numeric": "cpp",
+        "optional": "cpp",
+        "ostream": "cpp",
+        "random": "cpp",
+>>>>>>> julia
         "ratio": "cpp",
         "sstream": "cpp",
         "stdexcept": "cpp",
@@ -62,5 +77,11 @@
         "unordered_map": "cpp",
         "utility": "cpp",
         "vector": "cpp"
+<<<<<<< HEAD
+=======
+=======
+        "iostream": "cpp"
+>>>>>>> bikash
+>>>>>>> julia
     }
 }
