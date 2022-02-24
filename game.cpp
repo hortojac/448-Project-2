@@ -136,6 +136,8 @@ void Game::playSound(std::string State, int Player){
 
 void Game::playGame() // game class function 'playGame' controls much of the game logic
 {
+    std::string command = "afplay -v 0.9 Assets/start.mp3";
+    system(command.c_str());
     int kind_of_game = 0;
     std::cout << "Welcome to Battleship!" << std::endl; // prints out welcome message
     std::cout << "----------------------" << std::endl; // prints out visual break
