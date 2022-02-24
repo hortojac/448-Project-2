@@ -740,9 +740,9 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     int rights = 0;
 
     //above counter
-    for(int i=0; cont; i++)
+    for(int i=1; cont; i++)
     {
-        if( ((yNumber+i)>10) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ((yNumber-i)<1) || (player2->ExistingShip(xLetter, yNumber)) )
         {
             cont = false;
         }
@@ -753,9 +753,9 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     }
     cont = true;
     //below counter
-    for(int i=0; cont; i++)
+    for(int i=1; cont; i++)
     {
-        if( ((yNumber-i)<1) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ((yNumber+i)>10) || (player2->ExistingShip(xLetter, yNumber)) )
         {
             cont = false;
         }
@@ -766,9 +766,9 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     }
     cont = true;
     //right counter
-    for(int i=0; cont; i++)
+    for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)+i) >9 ) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ( (ConvertToNumber(xLetter)+1+i) >10 ) || (player2->ExistingShip(xLetter, yNumber)) )
         {
             cont = false;
         }
@@ -779,9 +779,9 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     }
     cont = true;
     //left counter
-    for(int i=0; cont; i++)
+    for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)-i) <0 ) || (player2->ExistingShip(xLetter, yNumber)) )
+        if( ( (ConvertToNumber(xLetter)+1-i) <1 ) || (player2->ExistingShip(xLetter, yNumber)) )
         {
             cont = false;
         }
@@ -791,17 +791,24 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
         }
     }
     cont = true;
+    std::cout << "aboves == " << aboves << "\n";
+    std::cout << "belows == " << belows << "\n";
+    std::cout << "rights == " << rights << "\n";
+    std::cout << "lefts == " << lefts << "\n";
     //both counter
     if( ((aboves+belows+1) >= shipNumber) &&  ((lefts+rights+1) >= shipNumber))
     {
+        std::cout << "BOTH\n";
         return('B');
     }
     else if( (lefts+rights+1) >= shipNumber )
     {
+        std::cout << "HOR\n";
         return('H');
     }
     else if( ((aboves+belows+1) >= shipNumber) )
     {
+        std::cout <<"VER\n";
         return('V');
     }
     
