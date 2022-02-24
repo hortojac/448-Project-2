@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "ship.h"
+#include <unistd.h> 
 
 class Player
 {
@@ -21,6 +22,8 @@ class Player
 
     bool shipAttacked(char xGuess, int yGuess); // returns a bool if the given coordinate matches the ships
     bool allShipDown(); // returns a bool if all ships are sunk
+
+    bool ExistingShip(char xPos, int yPos);
 
     private:
     Ship** ships; // declares a ship pointer 'ships'

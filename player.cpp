@@ -1,6 +1,7 @@
 #include <iostream>
 #include "player.h"
 
+
 Player::Player(int amountShips) // Player class constructor with the number of ships as an input
 {
     ships = new Ship *[amountShips]; // declares an array of ship pointers equal to the number of ships
@@ -145,8 +146,10 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
                             positionDownCount++;             // add one to positionDownCount
                             if (positionDownCount == length) // if the length of positionDownCount is equal to the length of the ship...
                             {
-                                ships[i]->killShip();                             // ship at the index is killed
+                                ships[i]->killShip(); // ship at the index is killed
                                 std::cout << "[Sank!] - Ship Down!" << std::endl; // player is informed that the ship is sunk
+                                std::string command = "afplay -v 0.7 Assets/sunk.mp3";
+
                             }
                         }
                     }
@@ -254,3 +257,29 @@ int** Player::getAttackBoard()
 {
     return attackBoard;
 }
+
+bool Player::ExistingShip(char xPos, int yPos) 
+// player class function 'shipAttacked' returns true 
+//if the given coordinates match the given coordinates of the ship
+{
+    for (int i = 0; i < numberOfShips; i++) //  by ship index
+    {
+        int length = ships[i]->getShipLength(); 
+        // declares int 'length' and initializes with the value of the length of ship i
+
+        for (int j = 0; j < length; j++) //  by coord index
+        {
+            int xCoord = ships[i]->getXCoord(j);               
+            // declares int 'xCoord' and initializes with the value of ship i x coordinate
+            int yCoord = ships[i]->getYCoord(j);               
+            // declares int 'yCoord' and initializes with the value of ship i y coordinate
+            if ((xCoord == (int)xPos) && (yCoord == yPos)) 
+            // if x and y guesses are one of coord(ship(player))
+            {
+                return true;
+                
+            }
+        }
+    }
+    return false;
+}     
