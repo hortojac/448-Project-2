@@ -46,6 +46,10 @@ char Ship::getXCoord(int spotNumber) // ship class 'getXCoord' function returns 
 void Ship::setYCoord(int spotNumber, int value) // ship class 'setYCoord' function sets the y coordinate of the given length spot with the given value
 {
     shipCoords[spotNumber][1] = value; // sets the spot to the value
+    if(spotNumber == getShipLength()-1){
+        std::string command = "afplay -v 0.9 Assets/placed.mp3";
+        system(command.c_str());
+    }
 }
 
 int Ship::getYCoord(int spotNumber) // ship class 'getYCoord' function returns the int y value of the given length spot

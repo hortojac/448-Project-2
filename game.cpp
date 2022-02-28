@@ -131,11 +131,20 @@ void Game::playSound(std::string State, int Player){
         std::string command = "afplay -v 0.5 Assets/hit.mp3"; 
         system(command.c_str());
     }
+    else if(State == "aiMiss"){
+        system("say Darn I missed");
+    }
+    else if(State == "aiHit"){
+        system("Say boo yea, that's a hit partner");
+    }
 }
 
 
 void Game::playGame() // game class function 'playGame' controls much of the game logic
 {
+    std::string command = "afplay -v 0.9 Assets/start.mp3";
+    system(command.c_str());
+
     int kind_of_game = 0;
     std::cout << "Welcome to Battleship!" << std::endl; // prints out welcome message
     std::cout << "----------------------" << std::endl; // prints out visual break
@@ -1072,6 +1081,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        playSound("aiHit",0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
                         {
@@ -1081,6 +1091,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     else // otherwise
                     {
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                        playSound("aiMiss", 0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
                     // printBoardP2();
@@ -1142,6 +1153,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        playSound("aiHit",0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
                         {
@@ -1151,6 +1163,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     else // otherwise
                     {
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                        playSound("aiMiss",0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
                     // printBoardP2();
@@ -1209,6 +1222,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        playSound("aiHit",0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
                         {
@@ -1218,6 +1232,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     else // otherwise
                     {
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                        playSound("aiMiss",0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
                     // printBoardP2();
