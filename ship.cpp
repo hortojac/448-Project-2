@@ -28,6 +28,17 @@ Ship::~Ship(){ // ship class destructor
     delete[] shipCoords; // delete the shipCoords int array
 }
 
+int Ship::getLives() // ship class 'getShipHit' function returns how many lives this ship has, i.e. how many more times it must be hit
+{
+   int count = 0;
+    for (int i = 0; i < shipLength; i++) {
+        if (!spotsHit[i]) {
+            count++;
+        }
+    }
+    return count; // returns how many lives this ship has, i.e. how many more times it must be hit
+}
+
 bool Ship::isSank() // ship class 'isSank' function will return a bool if the ship is sunk
 {
     return sank; // returns status of sank

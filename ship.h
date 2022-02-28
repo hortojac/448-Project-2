@@ -6,6 +6,8 @@ class Ship
     public:
     Ship(int length); //ship constructor with length of the ship as an input
     ~Ship(); //ship deconstructor
+
+    int getLives();
     bool isSank(); //returns bool if the ship is sunk
     void setXCoord(int spotNumber, char value); //void function to set the x coordinate of the ship
     char getXCoord(int spotNumber); //returns the char of the x coordinate at the specified length spot on the ship

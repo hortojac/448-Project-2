@@ -1,8 +1,15 @@
+//#define NOMINMAX  need to uncomment these if using a Windows computer to debug
 #include <iostream>
 #include <limits>
 #include <random>
 #include <string>
 #include "game.h"
+//#ifdef __unix__
+//#include <unistd.h>
+//#elif defined _WIN32
+//#include <windows.h>
+//#define sleep(x) Sleep(1000 * (x))
+//#endif
 
 Game::Game() // game constructor
 {
@@ -94,6 +101,58 @@ void Game::printBoard() // game class function 'printBoard' prints the board to 
         }
         std::cout << '\n'; // print new line
     }
+}
+
+void Game::printScore(Player* thisPlayer, Player* otherPlayer) {
+    int thisPlayerNumSunk, otherPlayerNumSunk = 0;
+    std::string thisStatus = "\n\n[SYSTEM] ";
+    std::string otherStatus = "\n[SYSTEM] ";
+    int thisSunk = 0;
+    int otherSunk = 0;
+    std::string thisShipString = "[SYSTEM] Your ships:";
+    std::string otherShipString = "[SYSTEM] The enemy's ships:";
+
+    for (int i = 0; i < shipAmount; i++) {
+        std::string thisTemp = "         ";
+        std::string otherTemp = "";
+
+             switch (i) {
+             case 0: thisTemp += "[1x1]: "; break;
+             case 1: thisTemp += "[1x2]: "; break;
+             case 2: thisTemp += "[1x3]: "; break;
+             case 3: thisTemp += "[1x4]: "; break;
+             case 4: thisTemp += "[1x5]: "; break;
+             }
+             otherTemp = thisTemp;
+
+             if (thisPlayer->getShip(i)->isSank()) { 
+                 thisTemp += "Sunk!";
+                 thisSunk++;
+             }
+             else {
+                 thisTemp += std::to_string(thisPlayer->getShip(i)->getLives());
+                 if (thisPlayer->getShip(i)->getLives() == 1) { thisTemp += " life left."; }
+                 else { thisTemp += " lives left."; }
+             }
+
+             if (otherPlayer->getShip(i)->isSank()) {
+                 otherTemp += "Sunk!";
+                 otherSunk++;
+             }
+             else {
+                 otherTemp += std::to_string(otherPlayer->getShip(i)->getLives());
+                 if (otherPlayer->getShip(i)->getLives() == 1) { otherTemp += " life left."; }
+                 else { otherTemp += " lives left."; }
+             }
+             thisShipString += "\n" + thisTemp;
+             otherShipString += "\n" + otherTemp;
+    }
+
+     thisStatus += "The enemy sank " + std::to_string(thisSunk) + " of your ships!\n" + thisShipString;
+     otherStatus += "You sank " + std::to_string(otherSunk) + " of the enemy's ships!\n" + otherShipString;
+
+     std::cout << thisStatus << '\n' << '\n';
+     std::cout << otherStatus << '\n' << '\n';
 }
 
 void Game::easyMode(int shipAmount)
@@ -920,6 +979,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
         std::cout << "PLAYER 1 ATTACK BOARD (R=hit W=miss)" << std::endl; // inform which board and a basic key
         std::cout << "------------------------------------" << std::endl; // extra spacing
         player1->printAttackBoard(); // print player 1s board
+        printScore(player1, player2);
         std::cout << std::endl; // new line
         do // loop at least once
         {
@@ -986,6 +1046,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                 std::cout << "PLAYER 2 ATTACK BOARD (R=hit W=miss)" << std::endl; // inform that it's player 2s turn with a basic key
                 std::cout << "------------------------------------" << std::endl; // extra spacing
                 player2->printAttackBoard(); // print player 2s attack board
+                printScore(player2, player1);
                 std::cout << std::endl; // new line
                 /* PLAYER 2 : Guessing Coordinates */
                 do // loop at least once

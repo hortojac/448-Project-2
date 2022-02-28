@@ -17,6 +17,7 @@ public:
     bool ai;
     void makeBoard(); //declares makeBoard function with public scope
     void printBoard(); //declares printBoard function with public scope
+    void printScore(Player* thisPlayer, Player* otherPlayer); //declares printScore function with public scope
     void obtainShips(); //declares obtainShips function with public scope
     void playerGuess(); //declares playerGuess function with public scope
     void labels(); //declares labels function with public scope
