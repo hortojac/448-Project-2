@@ -667,15 +667,6 @@ void Game::obtainShips() // game class function 'obtainShips'
                             }
                         }
 
-                        /*if(orientation == 'B')
-                        {
-                            isValidCoord = true;
-                            std::uniform_int_distribution<> v_or_h(0,1); // randomly selects orientation
-
-                            vertical = 0;//v_or_h(gen);
-                        }*/
-
-
                         if(orientation == 'B')
                         {
                             std::uniform_int_distribution<> v_or_h(0,1);
@@ -859,17 +850,14 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
     //both counter
     if( ((aboves+belows+1) >= shipNumber) &&  ((lefts+rights+1) >= shipNumber))
     {
-        std::cout << "BOTH\n";
         return('B');
     }
     else if( (lefts+rights+1) >= shipNumber )
     {
-        std::cout << "HOR\n";
         return('H');
     }
     else if( ((aboves+belows+1) >= shipNumber) )
     {
-        std::cout <<"VER\n";
         return('V');
     }
     
