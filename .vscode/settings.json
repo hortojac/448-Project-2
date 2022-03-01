@@ -1,9 +1,5 @@
 {
     "files.associations": {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> julia
         "iostream": "cpp",
         "__bit_reference": "cpp",
         "__bits": "cpp",
@@ -68,11 +64,4 @@
         "unordered_map": "cpp",
         "utility": "cpp",
         "vector": "cpp"
-<<<<<<< HEAD
-=======
-=======
-        "iostream": "cpp"
->>>>>>> bikash
->>>>>>> julia
-    }
 }
