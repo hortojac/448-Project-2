@@ -58,7 +58,7 @@ void Ship::setYCoord(int spotNumber, int value) // ship class 'setYCoord' functi
 {
     shipCoords[spotNumber][1] = value; // sets the spot to the value
     if(spotNumber == getShipLength()-1){
-        std::string command = "afplay -v 0.9 Assets/placed.mp3";
+        std::string command = "afplay -v 0.9 -r 2 -t 1.0 Assets/placed.mp3";
         system(command.c_str());
     }
 }
