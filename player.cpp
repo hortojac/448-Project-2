@@ -149,6 +149,7 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
                                 ships[i]->killShip(); // ship at the index is killed
                                 std::cout << "[Sank!] - Ship Down!" << std::endl; // player is informed that the ship is sunk
                                 std::string command = "afplay -v 0.7 Assets/sunk.mp3";
+                                system(command.c_str());
 
                             }
                         }
