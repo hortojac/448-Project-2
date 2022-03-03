@@ -756,18 +756,18 @@ void Game::obtainShips() // game class function 'obtainShips'
     }
 }
 
-char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
+char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)//check if there is enough space to fit the entire ship before starting to place it
 {
-    bool cont = true;
-    int aboves = 0;
-    int belows = 0;
-    int lefts = 0;
-    int rights = 0;
+    bool cont = true;//for loop will continue until 'cont' is set to false
+    int aboves = 0;//counts how many valid spaces are above the index
+    int belows = 0;//counts how many valid spaces are below the index
+    int lefts = 0;//counts how many valid spaces are to the left of the index
+    int rights = 0;//counts how many valid spaces are to the right of the index
 
     //above counter
     for(int i=1; cont; i++)
     {
-        if( ((yNumber-i)<1) || (player2->ExistingShip(xLetter, yNumber-i)) )
+        if( ((yNumber-i)<1) || (player2->ExistingShip(xLetter, yNumber-i)) )//if a ship exists above or the game board ends
         {
             cont = false;
         }
@@ -776,11 +776,11 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             aboves++;
         }
     }
-    cont = true;
+    cont = true;//reset cont for next counter
     //below counter
     for(int i=1; cont; i++)
     {
-        if( ((yNumber+i)>10) || (player2->ExistingShip(xLetter, yNumber+i)) )
+        if( ((yNumber+i)>10) || (player2->ExistingShip(xLetter, yNumber+i)) )//if a ship exists below or the game board ends
         {
             cont = false;
         }
@@ -789,11 +789,11 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             belows++;
         }
     }
-    cont = true;
+    cont = true;//reset cont for next counter
     //right counter
     for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)+1+i) >10 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1+i, yNumber)) )
+        if( ( (ConvertToNumber(xLetter)+1+i) >10 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1+i, yNumber)) )//if a ship exists to the right or the game board ends
         {
             cont = false;
         }
@@ -802,11 +802,11 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             rights++;
         }
     }
-    cont = true;
+    cont = true;//reset cont for next counter
     //left counter
     for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)+1-i) <1 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1-i, yNumber)) )
+        if( ( (ConvertToNumber(xLetter)+1-i) <1 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1-i, yNumber)) )//if a ship exists to the left or the game board ends
         {
             cont = false;
         }
@@ -815,22 +815,22 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)
             lefts++;
         }
     }
-    cont = true;
+    cont = true;//reset cont for next counter
     //both counter
-    if( ((aboves+belows+1) >= shipNumber) &&  ((lefts+rights+1) >= shipNumber))
+    if( ((aboves+belows+1) >= shipNumber) &&  ((lefts+rights+1) >= shipNumber))//if there is enough valid spaces to place the ship horizontal or vertical than return 'B' for both
     {
         return('B');
     }
-    else if( (lefts+rights+1) >= shipNumber )
+    else if( (lefts+rights+1) >= shipNumber )//if there is only enough valid spaces to place the ship horizontally than return 'H' for horizontal
     {
         return('H');
     }
-    else if( ((aboves+belows+1) >= shipNumber) )
+    else if( ((aboves+belows+1) >= shipNumber) )//if there is only enough valid spaces to place the ship vertically than return 'V' for vertical
     {
         return('V');
     }
     
-    return('O');
+    return('O');//there is no orientation that will allow the ai to finish placing this ship so new coordinates should be generated
 }
 
 bool Game::isHorizontalTo(Player* thisPlayer, char xLetter, int yNumber, int shipNumber) //checks if the ai has started to place their ships horizontally
