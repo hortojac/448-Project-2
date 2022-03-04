@@ -1147,15 +1147,15 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                             advance_left = false;
                             x_index = ConvertToNumber(orig_x);
                             if(y_index == 1)
-                                {
-                                    advance_up = false;
-                                    advance_down = true;
-                                    y_index = orig_y;
-                                }
-                                else
-                                {
-                                    advance_up = true;
-                                }
+                            {
+                                advance_up = false;
+                                advance_down = true;
+                                y_index = orig_y;
+                            }
+                            else
+                            {
+                                advance_up = true;
+                            }
                         }
                         if(advance_up && y_index == 1) // checks if the y_index is at the very top of the board in guesses
                         {
@@ -1333,7 +1333,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
-                        //playSound("aiHit",0);
+                        playSound("aiHit",0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
                         {
@@ -1343,7 +1343,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     else // otherwise
                     {
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-                        //playSound("aiMiss", 0);
+                        playSound("aiMiss", 0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
                     // printBoardP2();
