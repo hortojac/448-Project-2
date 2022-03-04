@@ -178,11 +178,6 @@ void Game::playSound(std::string State, int Player){
         std::string command = "afplay -v 0.5 -t 1.0 Assets/aiHit.mp3"; 
         system(command.c_str());
     }
-    else if(State == "shipPlaced"){
-        std::string command = "afplay -v 0.9 -r 2 -t 1.0 Assets/placed.mp3";
-        system(command.c_str());
-    }
-    }
 }
 
 
