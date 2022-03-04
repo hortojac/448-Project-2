@@ -82,10 +82,10 @@ Player::~Player()
     delete[] attackBoard; // deletes empty board
 }
 
-void Player::addShip(int shipNumber, int coordIndex, char xCoord, int yCoord, int shipSize)
+void Player::addShip(int shipNumber, int coordIndex, char xCoord, int yCoord, int shipSize, bool isAi)
 {
     ships[shipNumber]->setXCoord(coordIndex, xCoord);
-    ships[shipNumber]->setYCoord(coordIndex, yCoord);
+    ships[shipNumber]->setYCoord(coordIndex, yCoord, isAi);
     shipBoard[yCoord][(int)xCoord - 64] = shipNumber + 1;
 }
 

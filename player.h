@@ -10,7 +10,7 @@ class Player
     ~Player(); // Player destructor
     void addShip(int shipNumber, Ship* ship); // addShip function with shipNumber and ship pointer
 
-    void addShip(int shipNumber, int coordIndex, char xCoord, int yCoord, int shipSize); // addShip function with shipNumber and its data manually
+    void addShip(int shipNumber, int coordIndex, char xCoord, int yCoord, int shipSize, bool isAi); // addShip function with shipNumber and its data manually
     void getShipInfo(int shipNumber, int coordIndex); //  Temp line - Lee
     void printShipBoard();
     void printAttackBoard();

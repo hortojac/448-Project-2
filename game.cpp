@@ -177,6 +177,7 @@ void Game::playSound(std::string State, int Player){
     else if(State == "aiHit"){
         std::string command = "afplay -v 0.5 -t 1.0 Assets/aiHit.mp3"; 
         system(command.c_str());
+
     }
 }
 
@@ -308,7 +309,7 @@ void Game::obtainShips() // game class function 'obtainShips'
         }
     } while (tempyNumber < 1 || tempyNumber > 10); // loop if input isn't between 1 and 10
 
-    player1->addShip(0, 0, tempxLetter, tempyNumber, 1); // temp line - Lee
+    player1->addShip(0, 0, tempxLetter, tempyNumber, 1, false); // temp line - Lee
     player1->getShipInfo(0, 0);                          // temp line - Lee :: it seems like it is updating the information above function.
     std::cout << std::endl;
     std::cout << "PLAYER 1 SHIP BOARD" << std::endl;
@@ -409,7 +410,7 @@ void Game::obtainShips() // game class function 'obtainShips'
             } while (!isValidCoord); // loop if coordinates are invalid
             prevX = (int)tempxLetter; // set prevX to the ASCII of tempxLetter
             prevY = tempyNumber; // set prevY to tempynumber
-            player1->addShip(i - 1, j, tempxLetter, tempyNumber, i); // temp line - Lee
+            player1->addShip(i - 1, j, tempxLetter, tempyNumber, i, false); // temp line - Lee
             player1->getShipInfo(i - 1, j);                          // temp line - Lee :: it seems like it is updating the information above function.
             std::cout << std::endl; // new line
             std::cout << "PLAYER 1 SHIP BOARD" << std::endl; // tell player who's board it is
@@ -462,7 +463,7 @@ void Game::obtainShips() // game class function 'obtainShips'
             }
         } while (tempyNumber < 1 || tempyNumber > 10); // loop while error persists
 
-        player2->addShip(0, 0, tempxLetter, tempyNumber, 1); // temp line - Lee
+        player2->addShip(0, 0, tempxLetter, tempyNumber, 1, false); // temp line - Lee
         player2->getShipInfo(0, 0);                          // temp line - Lee :: it seems like it is updating the information above function.
         std::cout << std::endl; // new line
         std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // print information for whos board
@@ -559,7 +560,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                 } while (!isValidCoord); // loop while coordinates are invalid
                 prevX = (int)tempxLetter; // sets 'prevX' as the ASCII of 'tempxLetter'
                 prevY = tempyNumber; // sets 'prevY' as 'tempyNumber'
-                player2->addShip(i - 1, j, tempxLetter, tempyNumber, i); // temp line - Lee
+                player2->addShip(i - 1, j, tempxLetter, tempyNumber, i, false); // temp line - Lee
                 player2->getShipInfo(i - 1, j);                          // temp line - Lee :: it seems like it is updating the information above function.
                 std::cout << std::endl; // new line
                 std::cout << "PLAYER 2 SHIP BOARD" << std::endl; // informs player on whos board it is
@@ -590,7 +591,7 @@ void Game::obtainShips() // game class function 'obtainShips'
         std::uniform_int_distribution<> distr_y(1, 10); // define the range for the random numbers
         randX = convertLetter[distr_x(gen)]; //Ai places ship 1 at any X coordinate (A-J)
         randY = distr_y(gen); //Ai places ship 1 at any Y coordinate (1-10)
-        player2->addShip(0, 0, randX, randY, 1); // adds ship to ai's board
+        player2->addShip(0, 0, randX, randY, 1, true); // adds ship to ai's board
         player2->getShipInfo(0, 0);  // outputs to user what index the ai placed their ship (will delete later)          
         std::cout << std::endl; // new line
         std::cout << "AI SHIP BOARD" << std::endl; 
@@ -613,7 +614,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                     } while (isOverlapCoord(player2, randX, randY) || orientation=='O');//the ai will continue to generate coordinates until an empty and valid index is found
                     previousX = randX; //store where the x coordinate was placed
                     previousY = randY; //store where the y coordinate was placed
-                    player2->addShip(i - 1, j, randX, randY, i); //add the coordinate to the ai's board
+                    player2->addShip(i - 1, j, randX, randY, i, true); //add the coordinate to the ai's board
                     player2->getShipInfo(i - 1, j); // outputs to user what index the ai placed their ship (will delete later)                          
                     std::cout << std::endl; // new line
                     std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
@@ -675,7 +676,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                     previousX = randX; //store where the x coordinate was placed
                     previousY = randY; //store where the y coordinate was placed
                     isValidCoord = false; //reset isValidCoord back to false
-                    player2->addShip(i - 1, j, randX, randY, i); //add the coordinate to the ai's board
+                    player2->addShip(i - 1, j, randX, randY, i, true); //add the coordinate to the ai's board
                     player2->getShipInfo(i - 1, j); // outputs to user what index the ai placed their ship (will delete later)                                       
                     std::cout << std::endl; // new line
                     std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
@@ -742,7 +743,7 @@ void Game::obtainShips() // game class function 'obtainShips'
                     previousX = randX; //store where the x coordinate was placed
                     previousY = randY; //store where the y coordinate was placed
                     isValidCoord = false; //reset isValidCoord back to false
-                    player2->addShip(i - 1, j, randX, randY, i); //add the coordinate to the ai's board
+                    player2->addShip(i - 1, j, randX, randY, i, true); //add the coordinate to the ai's board
                     player2->getShipInfo(i - 1, j);  // outputs to user what index the ai placed their ship (will delete later)                                                         
                     std::cout << std::endl; // new line
                     std::cout << "AI SHIP BOARD" << std::endl; // informs player on whos board it is
@@ -994,7 +995,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
             if (player2->allShipDown()) // if all the ships are sunk
             {
                 finishGame(1); // finish the game 
-            }else
+            }
         }
         else // otherwise...
         {
