@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include "player.h"
 
 
@@ -147,8 +148,10 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
                             if (positionDownCount == length) // if the length of positionDownCount is equal to the length of the ship...
                             {
                                 ships[i]->killShip(); // ship at the index is killed
+                                sleep(2.5);
                                 std::cout << "[Sank!] - Ship Down!" << std::endl; // player is informed that the ship is sunk
                                 std::string command = "afplay -v 0.7 Assets/sunk.mp3";
+                                
                                 system(command.c_str());
 
                             }

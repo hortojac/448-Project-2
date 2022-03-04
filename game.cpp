@@ -4,6 +4,7 @@
 #include <random>
 #include <string>
 #include "game.h"
+#include "ship.h"
 //#ifdef __unix__
 //#include <unistd.h>
 //#elif defined _WIN32
@@ -157,13 +158,10 @@ void Game::printScore(Player* thisPlayer, Player* otherPlayer) {
 }
 
 void Game::playSound(std::string State, int Player){
-
-    if(State == "Win")
-    {
+    if(State == "Win"){
         std::cout << "Player " << Player << " wins the game! \n"; // informs players who won
         std::string command = "afplay -v 0.9 Assets/you_won.mp3";
         system(command.c_str());
-
     }
     else if(State == "Miss"){
         std::string command = "afplay -v 0.5 -t 1.0 Assets/miss.mp3"; 
@@ -173,12 +171,17 @@ void Game::playSound(std::string State, int Player){
         system(command.c_str());
     }
     else if(State == "aiMiss"){
-        std::string command = "say Darn I missed"; 
+        std::string command = "afplay -v 0.5 -t 1.0 Assets/aiMiss.mp3"; 
         system(command.c_str());
     }
     else if(State == "aiHit"){
-        std::string command ="Say boo yea, that's a hit partner"; 
+        std::string command = "afplay -v 0.5 -t 1.0 Assets/aiHit.mp3"; 
         system(command.c_str());
+    }
+    else if(State == "shipPlaced"){
+        std::string command = "afplay -v 0.9 -r 2 -t 1.0 Assets/placed.mp3";
+        system(command.c_str());
+    }
     }
 }
 
@@ -988,12 +991,15 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
         {
             // 65 is A, to make A number 1 index, -64
             //player1->editAttackBoard((int)(xGuess - 64), yGuess, true); // if it hits ship, update board coord to 'RED'
-            playSound("Hit", 0);
+            if(player2->allShipDown() != true)
+            {
+                playSound("Hit", 0);
+            }
             (player1->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
             if (player2->allShipDown()) // if all the ships are sunk
             {
                 finishGame(1); // finish the game 
-            }
+            }else
         }
         else // otherwise...
         {
@@ -1056,15 +1062,24 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                 {
                     // 65 is A, to make A number 1 index, -64
                     //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
-                    (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
+                    if(player1->allShipDown() != true)
+                    {
+                        playSound("Hit", 0);
+                    }
+                    (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R';
+                     // sets the spot as hit on the map
                     if (player1->allShipDown()) // if all the ships are sunk
                     {
                         finishGame(2); // finish the game 
                     }
+    
+                        
+                
                 }
                 else // otherwise
                 {
                     //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                     playSound("Miss", 0);
                     (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                 }
                 // printBoardP2();
@@ -1104,8 +1119,8 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        playSound("aiHit", 0);
                         std::cout << "HIT!\n";
-                        playSound("aiHit",0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
                         {
