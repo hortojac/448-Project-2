@@ -927,6 +927,19 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
     char xGuess; // declares char 'xGuess'
     int yGuess; // declares int 'yGuess'
 
+    char xGuess; // declares char 'xGuess'
+    int yGuess; // declares int 'yGuess'
+    char orig_x;
+    int orig_y;
+    bool guess_advance = false;
+    bool advance_right = false;
+    bool advance_left = false;
+    bool advance_up = false;
+    bool advance_down = false;
+    int x_index;
+    int y_index;
+    char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};//used to convert char to int
+
     /* PLAYER 1 : Guessing Coordinates */
     while (!gameFinished) // while the game is still going...
     {
@@ -1111,76 +1124,231 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                 }
                 else if (ai_mode == 2) // smart mode
                 {
-                    (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
-                    if (player1->allShipDown()) // if all the ships are sunk
+                    ////Setup for random
+                    std::random_device rd;
+                    std::default_random_engine e1(rd());
+                    ////
+
+                    sleep(3); //wait three seconds
+                    std::cout << std::endl; // new line
+                    std::cout << "AI ATTACK BOARD" << std::endl; // lets player know it's AI's turn
+                    std::cout << "------------------------------------" << std::endl; // extra spacing
+                    player2->printAttackBoard(); // print player AI's attack board
+                    std::cout << std::endl; // new line
+
+                    if(guess_advance)
                     {
-
-                        int tempx = xGuess; // tempx is equal to last x guess from AI
-                        int tempy = yGuess; // tempy is equal to last y guess from AI
-
-                        ////Setup for random
-                        std::random_device rd;
-                        std::default_random_engine e1(rd());
-                        ////
-
-                        sleep(3); //wait three seconds
-                        std::cout << std::endl; // new line
-                        std::cout << "AI ATTACK BOARD" << std::endl; // lets player know it's AI's turn
-                        std::cout << "------------------------------------" << std::endl; // extra spacing
-                        player2->printAttackBoard(); // print player AI's attack board
-                        std::cout << std::endl; // new line
-
-                        if((player2->getAttackBoard())[tempy][(int)(tempx-64)] == 'R')
+                        if(advance_right && x_index == 9) // checks if x_index is at the very right side of the board in guesses
                         {
-                            //goes right first
-                            /* AI : Guessing Coordinates */
-                                std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
-                                xGuess = tempx + 1;
-                                tempx = xGuess;
-                                std::cout << xGuess << "\n";
-                                
-                                std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
-                                yGuess = tempy;
-                                std::cout << yGuess << "\n";
+                            advance_right = false;
+                            advance_left = true;
+                            x_index = ConvertToNumber(orig_x);
                         }
-                        else  // Initial AI attack and if a ship was not hit last turn
+                        if(advance_left && x_index == 0) // checks if the x_index is at the very left side of the board in guesses
                         {
-                            /* AI : Guessing Coordinates */
-                                std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
-                                char xChoices[] = {'A','B','C','D','E','F','G','H','I','J'};
-                                std::uniform_int_distribution<int> random_x(0, 9); // sets random_x to generate a random integer (an index for xChoices) between 0 and 9 inclusive
-                                xGuess = xChoices[random_x(e1)];
-                                tempx = xGuess;
-                                std::cout << xGuess << "\n";
-                                
-                                std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
-                                std::uniform_int_distribution<int> random_y(1, 10); // sets random_y to generate a random integer between 1 and 10 inclusive
-                                yGuess = random_y(e1);
-                                tempy = yGuess;
-                                std::cout << yGuess << "\n";
+                            advance_left = false;
+                            x_index = ConvertToNumber(orig_x);
+                            if(y_index == 1)
+                                {
+                                    advance_up = false;
+                                    advance_down = true;
+                                    y_index = orig_y;
+                                }
+                                else
+                                {
+                                    advance_up = true;
+                                }
                         }
-
-                        /* Where we need to update new board */
-                        if (player1->shipAttacked(xGuess,yGuess)) // if the attack hit a ship...
+                        if(advance_up && y_index == 1) // checks if the y_index is at the very top of the board in guesses
                         {
-                            // 65 is A, to make A number 1 index, -64
-                            //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
-                            playSound("aiHit",0);
-                            (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
-                            if (player1->allShipDown()) // if all the ships are sunk
+                            advance_up = false;
+                            advance_down = true;
+                            y_index = orig_y;
+                        }
+                        if(advance_down && y_index == 10) // checks if the y_index is at the very bottom of the board in guesses
+                        {
+                            advance_down = false;
+                            guess_advance = false;
+                        }
+                        if(advance_right)
+                        {
+                            // goes right first
+                            /* AI : Guessing Coordinates */
+                            if(x_index < 9 && x_index > -1)
                             {
-                                finishGame(2); // finish the game 
+                                std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                                xGuess = convertLetter[x_index+1];
+                                x_index = x_index + 1;
+                                std::cout << xGuess << "\n";
+
+                                std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                                yGuess = y_index;
+                                std::cout << yGuess << "\n";
+                                if(player1->shipAttacked(xGuess,yGuess))
+                                {
+                                    advance_right = true; // sets advance_right to true if continued hits
+    
+                                }
+                                else
+                                {
+                                    advance_right = false; // sets advance_right to false, left to true
+                                    advance_left = true; // if last hit was false
+                                    x_index = ConvertToNumber(orig_x); // resets x_index to original x guess
+                                }
+                            }
+                            else
+                            {
+                                advance_right = false; //sets advance_right to false and left to true
+                                advance_left = true; // if out of index range
+                                x_index = ConvertToNumber(orig_x); // sets x_index back to original x guess
                             }
                         }
-                        else // otherwise
+                        else if(advance_left)
                         {
-                            //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-                            playSound("aiMiss",0);
-                            (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
+                            // then goes left
+                            /* AI : Guessing Coordinates */
+                            if(x_index < 10 && x_index > 0)
+                            {
+                                std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                                xGuess = convertLetter[x_index-1];
+                                x_index = x_index - 1;
+                                std::cout << xGuess << "\n";
+
+                                std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                                yGuess = y_index;
+                                std::cout << yGuess << "\n";
+                                if(player1->shipAttacked(xGuess,yGuess))
+                                {
+                                    advance_left = true; // sets advance_left to true if continued hits
+                                }
+                                else
+                                {
+                                    advance_left = false; // sets left to false and up to true
+                                    advance_up = true; // if last guess was false
+                                    x_index = ConvertToNumber(orig_x); // sets x_index to origianl x guess
+                                }
+                            }
+                            else
+                            {
+                                advance_left = false; // sets left to false if out of index range
+                                x_index = ConvertToNumber(orig_x); // sets x_index back to original x guess
+                                if(y_index == 1)
+                                {
+                                    advance_up = false; // sets up to false if previous guess is at the top of board
+                                }
+                                else
+                                {
+                                    advance_up = true; // otherwise sets up to true
+                                }
+                            }
                         }
-                        // printBoardP2();
-                        
+                        else if(advance_up)
+                        {
+                            // then goes up
+                            /* AI : Guessing Coordinates */
+                            if(y_index < 11 && y_index > 1)
+                            {
+                                std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                                xGuess = orig_x;
+                                std::cout << xGuess << "\n";
+                                
+                                std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                                yGuess = y_index - 1;
+                                y_index = y_index - 1;
+                                std::cout << yGuess << "\n";
+                                if(player1->shipAttacked(xGuess,yGuess))
+                                {
+                                    advance_up = true; // sets advance_up to true if continued hits
+                                }
+                                else
+                                {
+                                    advance_up = false; // sets up advance to false, down to true, resests y_index to original y guess
+                                    advance_down = true; // if last hit was false
+                                    y_index = orig_y; // sets  y index back to original y guess
+                                }
+                            }
+                            else
+                            {
+                                advance_up = false; // sets left advance to false, down to true, resests y_index to original y guess 
+                                advance_down = true; // if out of index range
+                                y_index = orig_y; // sets y index back to original y guess
+                            }
+                        }
+                        else if(advance_down)
+                        {
+                            // then goes down
+                            /* AI : Guessing Coordinates */
+                            if(y_index < 10 && y_index > 0)
+                            {
+                                std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                                xGuess = orig_x;
+                                std::cout << xGuess << "\n";
+                                
+                                std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                                yGuess = y_index + 1;
+                                y_index = y_index + 1;
+                                std::cout << yGuess << "\n";
+                                if(player1->shipAttacked(xGuess,yGuess))
+                                {
+                                    advance_down = true; // sets advance_down to true if continued hits
+                                }
+                                else
+                                {
+                                    advance_down = false; // sets down to false
+                                    guess_advance = false; // and guess to false when last guess returned false
+                                }
+                            }
+                            else
+                            {
+                                advance_down = false; // sets down to false, guess advance to true 
+                                guess_advance = false; // if out of index range
+                            }
+                        }
                     }
+                    else // very first guess
+                    {
+                        // Initial AI attack and if a ship was not hit last turn
+                        /* AI : Guessing Coordinates */
+                        std::cout << "[ATTACK] AI enters X coordinate (A-J): "; // ask for x coordinate
+                        char xChoices[] = {'A','B','C','D','E','F','G','H','I','J'};
+                        std::uniform_int_distribution<int> random_x(0, 9); // sets random_x to generate a random integer (an index for xChoices) between 0 and 9 inclusive
+                        xGuess = xChoices[random_x(e1)];
+                        orig_x = xGuess; // sets the orginal x guess to the very first xGuess of each iteration of movement
+                        x_index = ConvertToNumber(xGuess); // converts char xGuess to a number index used above
+                        std::cout << xGuess << "\n";
+                        
+                        std::cout << "[ATTACK] AI - enters Y coordinate (1-10): "; // ask player for y coordinate
+                        std::uniform_int_distribution<int> random_y(1, 10); // sets random_y to generate a random integer between 1 and 10 inclusive
+                        yGuess = random_y(e1);
+                        orig_y = yGuess; // sets the original y guess to the very first yGuess of each iteration of movement
+                        y_index = yGuess; // sets y_index to yGuess to be used above
+                        std::cout << yGuess << "\n";
+
+                        if(player1->shipAttacked(xGuess,yGuess))
+                        {
+                            guess_advance = true; // sets guess_advance to true so it can make orthogonally movemements
+                            advance_right = true; // sets advance_right to true so the very first guess after making a hit is the right grid next to it
+                        }
+                    }
+                    /* Where we need to update new board */
+                    if (player1->shipAttacked(xGuess,yGuess)) // if the attack hit a ship...
+                    {
+                        // 65 is A, to make A number 1 index, -64
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
+                        //playSound("aiHit",0);
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
+                        if (player1->allShipDown()) // if all the ships are sunk
+                        {
+                            finishGame(2); // finish the game 
+                        }
+                    }
+                    else // otherwise
+                    {
+                        //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
+                        //playSound("aiMiss", 0);
+                        (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
+                    }
+                    // printBoardP2();
                 }
                 else if (ai_mode == 3) // hard mode
                 {
