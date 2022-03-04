@@ -5,7 +5,11 @@ any GUI library and we are only adding supplementary functions,
 not changing any core functionality.
 
 **Person Hour Log:**
-
+We averaged around 16 hours a person which is very close to our estimation.
+This included identifying the Software Architecture used by team 12, Creating
+the Story Points for our project, coding the ScoreBoard, Sounds used throughout 
+the game, Easy, Medium, and Hard Modes, and rewriting/finishing methods needed 
+for the game to work properly. 
 
 **Story Points:**
 1: Importing Project, Divinding Tasks, Creating projected hours for project
@@ -24,8 +28,28 @@ We think the team our group inherited from used Pipes and Filter Architecture be
 
 **AI Modes:**
 Easy: Attacks Randomly
+    During this mode, the AI chooses a random character from A - J, 
+    and a random number from 1 - 10 during its attack. This mode
+    has the same functionality as the 2 player game by updating the board 
+    with either a R for hit or a W for miss, with the added functionality 
+    of playing a sound for either a miss or hit. 
 
 Medium: Attacks Orthogonally
+    During this mode, the AI chooses a random character from A - J, 
+    and a random number from 1 - 10 during its attack. If this grid returns
+    as a miss, the AI will choose random grid coordiantes until this grid 
+    returns as a hit. During the AI's next turn, it attacks the grid to the right,
+    and keeps going right until it returns as a miss, the AI then will go left 
+    from the original grid coordinates until it returns as a miss. The AI will then 
+    go up from the original grid coordinates until it returns as a miss, then it will 
+    go down from the original grid coordinates until it returns as a miss, then it 
+    will repeat with random guesses and repeat if it returns as a hit. This mode uses
+    our own impelmeneted character array and returns the characters index in the array
+    to be used to traverse on the board, by adding either +1, or -1, for going right or left,
+    and returns the associated character with that index value. For traversing up or down,
+    the index is the same by adding either -1 or +1, for going up or down. If the AI gets to 
+    the edge of the board and hits the outer index ranges, it will stop going in that 
+    coorespnding direction and will go the other directions. 
 
 Hard: Attacks Player's Ships Every Turn (Cheater)
 
