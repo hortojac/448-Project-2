@@ -21,6 +21,14 @@ We estimate that for every story point it will take about 2 hours of our time. W
 **Identify the Software Architecture you think the Project 1 team used and explain why you think that:**
 We think the team our group inherited from used Pipes and Filter Architecture because they have different classes with specific role and methods pertaining to that class. For example, they have Player class that has getShipInfo method, which when called returns information about specific coordinate. Similarly, they have another class called Game, which has method printBoard when called prints player’s board to the terminal. Because they have different classes for different roles but they depend on each other inputs and outputs, We believe they used Pipes and Filter Architecture.
 
+
+**AI Modes:**
+Easy: Attacks Randomly
+
+Medium: Attacks Orthogonally
+
+Hard: Attacks Player's Ships Every Turn (Cheater)
+
 **Addition to Project 1 (5%):**
 Sound for Players and Ai
     Starting
