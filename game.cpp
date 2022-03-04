@@ -166,7 +166,7 @@ void Game::playSound(std::string State, int Player){
 
     }
     else if(State == "Miss"){
-        std::string command = "afplay -v 0.5 -t 2.0 Assets/miss.mp3"; 
+        std::string command = "afplay -v 0.5 -t 1.0 Assets/miss.mp3"; 
         system(command.c_str());
     }else if(State == "Hit"){
         std::string command = "afplay -v 0.5 -t 1.0 Assets/hit.mp3"; 
@@ -1362,8 +1362,8 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     //int ai_hardmode_shipIndex;
                     //int ai_hardmode_spotIndex;
 
-                    std::cout << "HERE!!!!!!\n";
-                     std::cout << "shipIndex: " << ai_hardmode_shipIndex << " spotIndex: " << ai_hardmode_spotIndex << "\n";
+                    
+                    std::cout << "shipIndex: " << ai_hardmode_shipIndex << " spotIndex: " << ai_hardmode_spotIndex << "\n";
                     xGuess = player1->getShip(ai_hardmode_shipIndex)->getXCoord(ai_hardmode_spotIndex);
                     yGuess = player1->getShip(ai_hardmode_shipIndex)->getYCoord(ai_hardmode_spotIndex);
                     
@@ -1383,7 +1383,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     }
                     else // AI should never miss
                     {
-                        std::cout << "ERROR! HACKER AI MISSED\n";
+                       
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
                         playSound("aiMiss", 0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
@@ -1392,12 +1392,12 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     // printBoardP2();
                     if(ai_hardmode_spotIndex + 1 < player1->getShip(ai_hardmode_shipIndex)->getShipLength()) // if the max ship spot hasn't been reached yet
                     {
-                        std::cout << "INCREASING SPOT\n";
+                       
                         ai_hardmode_spotIndex++;
                     }
                     else
                     {
-                        std::cout << "INCREASING SHIP\n";
+                       
                         ai_hardmode_shipIndex++;
                         ai_hardmode_spotIndex = 0;
                     }
