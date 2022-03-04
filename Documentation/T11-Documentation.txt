@@ -4,6 +4,9 @@ take less time than the first project, as we don't have to learn
 any GUI library and we are only adding supplementary functions, 
 not changing any core functionality.
 
+**Person Hour Log:**
+
+
 **Story Points:**
 1: Importing Project, Divinding Tasks, Creating projected hours for project
 2: Adding to the Documentation, Checking if there is an Existing Ship, Outlining AI Logic
