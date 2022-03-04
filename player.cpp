@@ -128,7 +128,7 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
                 if (ships[i]->positionDown(j)) // if it is Red pin already
                 {
                     missed = true;
-                    std::cout << "[MISSED!] - Spot already down! : " << i << " Position: " << j << std::endl;
+                    //std::cout << "[MISSED!] - Spot already down! : " << i << " Position: " << j << std::endl;
                 }
                 else
                 {

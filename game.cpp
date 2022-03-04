@@ -764,6 +764,8 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)//check if ther
     int belows = 0;//counts how many valid spaces are below the index
     int lefts = 0;//counts how many valid spaces are to the left of the index
     int rights = 0;//counts how many valid spaces are to the right of the index
+    char convertLetter[] = {'A','B','C','D','E','F','G','H','I','J'};
+    int test = 0;
 
     //above counter
     for(int i=1; cont; i++)
@@ -794,7 +796,8 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)//check if ther
     //right counter
     for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)+1+i) >10 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1+i, yNumber)) )//if a ship exists to the right or the game board ends
+        test = ConvertToNumber(xLetter)+i;
+        if( ( (ConvertToNumber(xLetter)+1+i) >10 ) || (player2->ExistingShip(convertLetter[test], yNumber)) )//if a ship exists to the right or the game board ends
         {
             cont = false;
         }
@@ -807,7 +810,8 @@ char Game::EnoughSpace(char xLetter, int yNumber, int shipNumber)//check if ther
     //left counter
     for(int i=1; cont; i++)
     {
-        if( ( (ConvertToNumber(xLetter)+1-i) <1 ) || (player2->ExistingShip(ConvertToNumber(xLetter)+1-i, yNumber)) )//if a ship exists to the left or the game board ends
+        test = ConvertToNumber(xLetter)-i;
+        if( ( (ConvertToNumber(xLetter)+1-i) <1 ) || (player2->ExistingShip(convertLetter[test], yNumber)) )//if a ship exists to the left or the game board ends
         {
             cont = false;
         }
@@ -1365,11 +1369,11 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     //int ai_hardmode_spotIndex;
 
                     
-                    std::cout << "shipIndex: " << ai_hardmode_shipIndex << " spotIndex: " << ai_hardmode_spotIndex << "\n";
+                    //std::cout << "shipIndex: " << ai_hardmode_shipIndex << " spotIndex: " << ai_hardmode_spotIndex << "\n";
                     xGuess = player1->getShip(ai_hardmode_shipIndex)->getXCoord(ai_hardmode_spotIndex);
                     yGuess = player1->getShip(ai_hardmode_shipIndex)->getYCoord(ai_hardmode_spotIndex);
                     
-                    std::cout << "xGuess: " << xGuess << " yGuess: " << yGuess << "\n";
+                    //std::cout << "xGuess: " << xGuess << " yGuess: " << yGuess << "\n";
 
                     /* Where we need to update new board */
                     if (player1->shipAttacked(xGuess, yGuess)) // if the attack hit a ship...
