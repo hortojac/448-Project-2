@@ -927,8 +927,6 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
     char xGuess; // declares char 'xGuess'
     int yGuess; // declares int 'yGuess'
 
-    char xGuess; // declares char 'xGuess'
-    int yGuess; // declares int 'yGuess'
     char orig_x;
     int orig_y;
     bool guess_advance = false;
