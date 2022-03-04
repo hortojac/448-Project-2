@@ -1085,6 +1085,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     std::cout << "AI ATTACK BOARD" << std::endl; // lets player know it's AI's turn
                     std::cout << "------------------------------------" << std::endl; // extra spacing
                     player2->printAttackBoard(); // print player AI's attack board
+                    printScore(player2, player1);
                     std::cout << std::endl; // new line
 
                     /* AI : Guessing Coordinates */
@@ -1132,6 +1133,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     std::cout << "AI ATTACK BOARD" << std::endl; // lets player know it's AI's turn
                     std::cout << "------------------------------------" << std::endl; // extra spacing
                     player2->printAttackBoard(); // print player AI's attack board
+                    printScore(player2, player1);
                     std::cout << std::endl; // new line
 
                     if(guess_advance)
