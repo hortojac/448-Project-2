@@ -53,12 +53,12 @@ During this mode, the AI will locate the Player's ships and attack them every tu
 
 ## Our Other Additions
 - Sound for Players and AI
- - Starting  
- - Hit 
- - Miss 
- - Sunk 
- - Win 
+  - Starting  
+  - Hit 
+  - Miss 
+  - Sunk 
+  - Win 
 - Score Board
- - How many ships are left
- - Number of ships you’ve sunk
- - Number of ships the opponent has sunk
+  - How many ships are left
+  - Number of ships you’ve sunk
+  - Number of ships the opponent has sunk
