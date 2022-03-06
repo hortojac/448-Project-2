@@ -58,6 +58,7 @@ void Ship::setYCoord(int spotNumber, int value, bool isAi) // ship class 'setYCo
 {
     shipCoords[spotNumber][1] = value; // sets the spot to the value
     if(spotNumber == getShipLength()-1 && !isAi){
+        /*Plays a "ding" sound once the ship placement is done, only for player. Not AI*/
         std::string command = "afplay -v 0.9 -r 2 -t 1.0 Assets/placed.mp3";
         system(command.c_str());
     }

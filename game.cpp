@@ -158,11 +158,15 @@ void Game::printScore(Player* thisPlayer, Player* otherPlayer) {
 }
 
 void Game::playSound(std::string State, int Player){
-    if(State == "Win"){
+    /* 
+    This fuction will play sounds according to the state it's in
+    miss, hit , and win
+    */
+    if(State == "Win"){ //win sounds
         if(ai && Player == 2) //if the AI wins
         {
             std::cout << "AI wins the game! Better Luck Next Time! \n"; // informs players who won
-            std::string command = "afplay -v 0.9 Assets/miss.mp3";
+            std::string command = "afplay -v 0.9 Assets/you_lose.mp3";
             system(command.c_str());
         }
         else
@@ -173,18 +177,18 @@ void Game::playSound(std::string State, int Player){
         }
        
     }
-    else if(State == "Miss"){
+    else if(State == "Miss"){ //miss sound for player
         std::string command = "afplay -v 0.5 -t 1.0 -r 2.0 Assets/miss.mp3"; 
         system(command.c_str());
-    }else if(State == "Hit"){
+    }else if(State == "Hit"){ //hit sound for player
         std::string command = "afplay -v 0.5 Assets/hit.mp3"; 
         system(command.c_str());
     }
-    else if(State == "aiMiss"){
+    else if(State == "aiMiss"){ //AI miss sound
         std::string command = "afplay -v 0.5 -t 1.0 Assets/aiMiss.mp3"; 
         system(command.c_str());
     }
-    else if(State == "aiHit"){
+    else if(State == "aiHit"){//AI hit sound
         std::string command = "afplay -v 0.5 Assets/aiHit.mp3"; 
         system(command.c_str());
 
@@ -194,7 +198,7 @@ void Game::playSound(std::string State, int Player){
 
 void Game::playGame() // game class function 'playGame' controls much of the game logic
 {
-    std::string command = "afplay -v 0.9 -r 1.2 Assets/start.mp3";
+    std::string command = "afplay -v 0.9 -r 1.2 Assets/start.mp3"; //game starting sound **taken from AMOONG US**
     system(command.c_str());
 
     int kind_of_game = 0;
@@ -601,6 +605,7 @@ void Game::obtainShips() // game class function 'obtainShips'
         std::uniform_int_distribution<> distr_y(1, 10); // define the range for the random numbers
         randX = convertLetter[distr_x(gen)]; //Ai places ship 1 at any X coordinate (A-J)
         randY = distr_y(gen); //Ai places ship 1 at any Y coordinate (1-10)
+        /* addShip funtion was modified to add a boolean to know it's a player or Ai's ship*/
         player2->addShip(0, 0, randX, randY, 1, true); // adds ship to ai's board
         player2->getShipInfo(0, 0);  // outputs to user what index the ai placed their ship (will delete later)          
         std::cout << std::endl; // new line
@@ -935,6 +940,7 @@ bool Game::isOverlapCoord(Player* thisPlayer, char xLetter, int yNumber) // game
     return false; // returns false
 }
 
+
 void Game::playerGuess() // game class 'playerGuess' function that asks for player coordinate input and then applies it to the relevant game board
 {
     char xGuess; // declares char 'xGuess'
@@ -1003,7 +1009,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
             //player1->editAttackBoard((int)(xGuess - 64), yGuess, true); // if it hits ship, update board coord to 'RED'
             if(player2->allShipDown() != true)
             {
-                playSound("Hit", 0);
+                playSound("Hit", 0); //Plays hit sound when x and y guess hits a ship
             }
             (player1->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
             if (player2->allShipDown()) // if all the ships are sunk
@@ -1014,7 +1020,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
         else // otherwise...
         {
             //player1->editAttackBoard((int)(xGuess - 64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-            playSound("Miss", 0);
+            playSound("Miss", 0); //plays miss sound for player if the x and y coordinate do not match ship
             (player1->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
         }
         // printBoardP1();
@@ -1074,7 +1080,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
                     if(player1->allShipDown() != true)
                     {
-                        playSound("Hit", 0);
+                        playSound("Hit", 0); //Plays hit sound when x and y guess hits a ship
                     }
                     (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R';
                      // sets the spot as hit on the map
@@ -1089,7 +1095,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                 else // otherwise
                 {
                     //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-                     playSound("Miss", 0);
+                     playSound("Miss", 0); //Plays miss sound when x and y guess do not hit ship
                     (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                 }
             }
@@ -1129,7 +1135,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
-                        playSound("aiHit", 0);
+                        playSound("aiHit", 0); //Plays AI hit sound when x and y guess hits a ship
                         std::cout << "HIT!\n";
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
@@ -1140,7 +1146,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     else // otherwise
                     {
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-                        playSound("aiMiss", 0);
+                        playSound("aiMiss", 0); //Plays AI miss sound when x and y guess miss do not hit ship
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
                 }
@@ -1358,7 +1364,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
-                        playSound("aiHit",0);
+                        playSound("aiHit",0); //Plays AI hit sound when x and y guess hit ship
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
                         {
@@ -1368,7 +1374,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     else // otherwise
                     {
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-                        playSound("aiMiss", 0);
+                        playSound("aiMiss", 0); //Plays AI miss sound when x and y guess miss do not hit ship
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
                 }
@@ -1398,7 +1404,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                         // 65 is A, to make A number 1 index, -64
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, true);// if it hits ship, update board coord to 'RED'
-                        playSound("aiHit",0);
+                        playSound("aiHit",0); //Plays AI hit sound when x and y guess hits a ship
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'R'; // sets the spot as hit on the map
                         if (player1->allShipDown()) // if all the ships are sunk
                         {
@@ -1409,7 +1415,7 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     {
                        
                         //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
-                        playSound("aiMiss", 0);
+                        playSound("aiMiss", 0); //Plays AI miss sound when x and y guess miss do not hit ship
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
 
@@ -1433,6 +1439,6 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
 
 void Game::finishGame(int winner) // game class 'finishGame' function declares the inputted player as the victor
 {
-    playSound("Win", winner);
+    playSound("Win", winner); //calss the playSound and announces winner and plays the win sound
     gameFinished = true; // sets 'gameFinished' to true
 }
