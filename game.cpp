@@ -159,15 +159,25 @@ void Game::printScore(Player* thisPlayer, Player* otherPlayer) {
 
 void Game::playSound(std::string State, int Player){
     if(State == "Win"){
-        std::cout << "Player " << Player << " wins the game! \n"; // informs players who won
-        std::string command = "afplay -v 0.9 Assets/you_won.mp3";
-        system(command.c_str());
+        if(ai && Player == 2) //if the AI wins
+        {
+            std::cout << "AI wins the game! Better Luck Next Time! \n"; // informs players who won
+            std::string command = "afplay -v 0.9 Assets/miss.mp3";
+            system(command.c_str());
+        }
+        else
+        {
+            std::cout << "Player " << Player << " wins the game! \n"; // informs players who won
+            std::string command = "afplay -v 0.9 Assets/you_won.mp3";
+            system(command.c_str());
+        }
+       
     }
     else if(State == "Miss"){
-        std::string command = "afplay -v 0.5 -t 1.0 Assets/miss.mp3"; 
+        std::string command = "afplay -v 0.5 -t 1.0 -r 2.0 Assets/miss.mp3"; 
         system(command.c_str());
     }else if(State == "Hit"){
-        std::string command = "afplay -v 0.5 -t 1.0 Assets/hit.mp3"; 
+        std::string command = "afplay -v 0.5 Assets/hit.mp3"; 
         system(command.c_str());
     }
     else if(State == "aiMiss"){
@@ -175,7 +185,7 @@ void Game::playSound(std::string State, int Player){
         system(command.c_str());
     }
     else if(State == "aiHit"){
-        std::string command = "afplay -v 0.5 -t 1.0 Assets/aiHit.mp3"; 
+        std::string command = "afplay -v 0.5 Assets/aiHit.mp3"; 
         system(command.c_str());
 
     }

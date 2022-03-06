@@ -148,7 +148,7 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
                             if (positionDownCount == length) // if the length of positionDownCount is equal to the length of the ship...
                             {
                                 ships[i]->killShip(); // ship at the index is killed
-                                sleep(2.5);
+                                sleep(2);
                                 std::cout << "[Sank!] - Ship Down!" << std::endl; // player is informed that the ship is sunk
                                 std::string command = "afplay -v 0.7 Assets/sunk.mp3";
                                 
@@ -163,7 +163,7 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
             }
         }
     }
-    std::cout << "[MISSED!] - Your attack to (" << xGuess << ", " << yGuess << ") was missed! \n"
+    std::cout << "[MISSED!] - Attack to (" << xGuess << ", " << yGuess << ") was missed! \n"
               << std::endl; // informs the player no ship was hit
     return false;           // returns false
 }
