@@ -5,7 +5,7 @@ Team 11 Project 2 Documentation
 ### Person-Hour Estimation
 15 Hours per person. This rough estimate came from projecting that Project 2 would take less time than the first project, as we didn't have to learn any GUI libraries or change any core functionality; we only had to add supplementary functions. 
 
-In the end, we averaged around 16 hours a person ([our actual accounting of the in-person hours](https://docs.google.com/spreadsheets/d/1lUsOUC2fbRDljCjvxWwighowklgWpwoVV_gzfDf-2TM/edit?usp=sharing)), which was very close to our estimate.  
+In the end, we averaged around 17 hours a person ([our actual accounting of the in-person hours](https://docs.google.com/spreadsheets/d/1lUsOUC2fbRDljCjvxWwighowklgWpwoVV_gzfDf-2TM/edit?usp=sharing)), which was very close to our estimate.  
 
 ### Story Point Estimation
 
