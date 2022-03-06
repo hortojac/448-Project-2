@@ -11,7 +11,7 @@ class Ship
     bool isSank(); //returns bool if the ship is sunk
     void setXCoord(int spotNumber, char value); //void function to set the x coordinate of the ship
     char getXCoord(int spotNumber); //returns the char of the x coordinate at the specified length spot on the ship
-    void setYCoord(int spotNumber, int value); //void function to set the y cooridnate of the ship
+    void setYCoord(int spotNumber, int value, bool isAi); //void function to set the y cooridnate of the ship
     int getYCoord(int spotNumber); //returns the int of the y coordinate at the specified length spot on the ship
     int getShipLength(); //returns the int of the ship length
     

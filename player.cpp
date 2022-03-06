@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include "player.h"
 
 
@@ -81,10 +82,10 @@ Player::~Player()
     delete[] attackBoard; // deletes empty board
 }
 
-void Player::addShip(int shipNumber, int coordIndex, char xCoord, int yCoord, int shipSize)
+void Player::addShip(int shipNumber, int coordIndex, char xCoord, int yCoord, int shipSize, bool isAi)
 {
     ships[shipNumber]->setXCoord(coordIndex, xCoord);
-    ships[shipNumber]->setYCoord(coordIndex, yCoord);
+    ships[shipNumber]->setYCoord(coordIndex, yCoord, isAi);
     shipBoard[yCoord][(int)xCoord - 64] = shipNumber + 1;
 }
 
@@ -147,8 +148,10 @@ bool Player::shipAttacked(char xGuess, int yGuess) // player class function 'shi
                             if (positionDownCount == length) // if the length of positionDownCount is equal to the length of the ship...
                             {
                                 ships[i]->killShip(); // ship at the index is killed
+                                sleep(2.5);
                                 std::cout << "[Sank!] - Ship Down!" << std::endl; // player is informed that the ship is sunk
                                 std::string command = "afplay -v 0.7 Assets/sunk.mp3";
+                                
                                 system(command.c_str());
 
                             }
