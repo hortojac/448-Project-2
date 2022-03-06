@@ -1071,7 +1071,6 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                     //player2->editAttackBoard((int)(xGuess-64), yGuess, false); // if it didn't hit anything, update board coord to 'WHITE'
                     (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                 }
-                // printBoardP2();
             }
         }
         else{
@@ -1123,7 +1122,6 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                         playSound("aiMiss", 0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
-                    // printBoardP2();
                 }
                 else if (ai_mode == 2) // smart mode
                 {
@@ -1352,7 +1350,6 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                         playSound("aiMiss", 0);
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
-                    // printBoardP2();
                 }
                 else if (ai_mode == 3) // hard mode
                 {
@@ -1395,21 +1392,17 @@ void Game::playerGuess() // game class 'playerGuess' function that asks for play
                         (player2->getAttackBoard())[yGuess][(int)(xGuess-64)] = 'W'; // sets the spot as a miss on the map
                     }
 
-                    // printBoardP2();
                     if(ai_hardmode_spotIndex + 1 < player1->getShip(ai_hardmode_shipIndex)->getShipLength()) // if the max ship spot hasn't been reached yet
                     {
                        
-                        ai_hardmode_spotIndex++;
+                        ai_hardmode_spotIndex++; // on the next turn, target the next spot on the same ship
                     }
                     else
                     {
                        
-                        ai_hardmode_shipIndex++;
+                        ai_hardmode_shipIndex++; // on the next turn, target the next ship 
                         ai_hardmode_spotIndex = 0;
                     }
-                    
-                    
-
                 }
             }
         }
